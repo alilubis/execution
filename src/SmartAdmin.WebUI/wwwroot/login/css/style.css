@@ -1,0 +1,224 @@
+body {
+    font-family: "Roboto", sans-serif;
+    background-color: #fff;
+}
+
+.bg-images {
+    height: auto;
+    background-image: url('/img/backgrounds/bg-login.png');
+    background-position: center center;
+    background-size: cover;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position-x: right;
+}
+
+.half,
+.half .container>.row {
+    height: 100vh;
+}
+
+
+/* Custom Styling */
+
+.btn,
+.btn-success,
+.form-control {
+    border-radius: 0;
+}
+
+.img-logo {
+    top: -50px;
+    max-width: 220px;
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+}
+
+.half,
+.half .bg {
+    width: 100%;
+}
+
+.contents {
+    width: 30%;
+    box-sizing: border-box;
+    box-shadow: 1px 1px 1px 2px #e1dfdf6e;
+    background-color: rgba(255, 255, 255, 0.75);
+}
+
+.alert {
+    margin-bottom: 0;
+}
+
+.col-lg-12.banner-header {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+img.header-brand-logo {
+    position: absolute;
+    top: 0;
+    right: 0;
+    max-width: 250px;
+}
+
+.banner-title {
+    color: #006CB8;
+    font-weight: bold;
+    padding-top: 2rem;
+    text-align: center !important;
+}
+
+.header-title {
+    padding-top: 1.75rem;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.btn-group .btn:not([class*="btn-outline-"]):not(.btn-icon):not(.btn-light) {
+    min-width: 110px;
+}
+
+.btn-group>.btn:not(:first-child):not(.dropdown-toggle),
+.btn-group>.btn-group:not(:first-child)>.btn {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.btn-group>.btn:not(:last-child):not(.dropdown-toggle),
+.btn-group>.btn-group:not(:last-child)>.btn {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.fixed-bottom {
+    left: 3.75%;
+    padding-bottom: 15px;
+}
+
+.footer-version {
+    color: #676A6C;
+    text-align: center !important;
+}
+
+.btn.btn-success {
+    width: 100%;
+}
+
+.group-server {
+    margin: auto;
+}
+
+img.brand-bottom {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    max-width: 185px;
+}
+
+
+/*
+select#server-name {
+    background: #FFFFFF;
+    border: 1px solid #919191;
+    box-sizing: border-box;
+    border-radius: 3px;
+    width: 140.61px;
+    height: 33px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 5px;
+    color: #747474;
+}
+*/
+
+@media (min-width: 768px) and (max-width: 1039.98px) {
+    .contents {
+        width: 40%;
+    }
+}
+
+@media (min-width: 472px) and (max-width: 767.98px) {
+    .contents {
+        width: 50%;
+    }
+}
+
+@media (min-width: 321px) and (max-width:471.98px) {
+    .contents {
+        width: 80%;
+        box-sizing: border-box;
+        box-shadow: none;
+        background-color: transparent;
+        align-items: center !important;
+        margin: auto;
+    }
+    .header-title {
+        text-align: center !important;
+    }
+    .col-lg-12.banner-header {
+        margin-top: 20px;
+    }
+    .img-logo {
+        top: 0;
+        max-width: 185px;
+        position: initial;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+    .mb-login {
+        box-sizing: border-box;
+        box-shadow: 1px 1px 1px 2px #e1dfdf6e;
+        background-color: rgba(255, 255, 255, 0.75);
+        padding: 1.5rem;
+        border-radius: 15px;
+    }
+}
+
+@media screen and (max-width:320px) {
+    .col-lg-12.banner-header {
+        margin-top: 10px;
+    }
+    .img-logo {
+        top: 0;
+        max-width: 185px;
+        position: initial;
+    }
+    .contents {
+        width: 80%;
+        box-sizing: border-box;
+        box-shadow: none;
+        background-color: transparent;
+        align-items: center !important;
+        margin: auto;
+    }
+    .header-title {
+        padding-top: 1.25rem;
+        font-weight: bold;
+        font-size: 16px;
+    }
+    .form-group {
+        margin-bottom: 0.5rem;
+    }
+    .img-logo {
+        top: 0;
+        max-width: 185px;
+        position: initial;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+    .mb-login {
+        box-sizing: border-box;
+        box-shadow: 1px 1px 1px 2px #e1dfdf6e;
+        background-color: rgba(255, 255, 255, 0.75);
+        padding: 1.5rem;
+        border-radius: 15px;
+    }
+}

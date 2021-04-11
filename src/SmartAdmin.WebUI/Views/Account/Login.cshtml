@@ -1,0 +1,118 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="~/login/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/login/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/vendors.bundle.css" />
+    <link rel="stylesheet" href="~/css/app.bundle.css" />
+    <link rel="stylesheet" href="~/login/css/style.css">
+    <title>@ViewData["Title"] LOGIN PAGE</title>
+</head>
+<body class="bg-images">
+    <div class="fixed-top">
+        <img src="~/img/backgrounds/brand-logo.png" class="header-brand-logo" alt="brand logo">
+    </div>
+    <div class="d-lg-flex half">
+        <div class="contents">
+            <div class="container">
+                <div class="row align-items-center justify-content-center">
+                    <div class="col-md-10 mb-login">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <img src="~/img/backgrounds/logo-ikom.png" class="img-logo" alt="logo-image" />
+                            </div>
+                            <div class="col-lg-12 banner-header">
+                                <div class="btn-group btn-group-toggle align-items-center" data-toggle="buttons">
+                                    <label class="btn btn-info waves-effect waves-themed" id="dev-checked">
+                                        <input type="radio" name="server" class="dev-checked" value="dev"> Training
+                                    </label>
+                                    <label class="btn btn-info waves-effect waves-themed" id="prod-checked">
+                                        <input type="radio" name="server" id="prod-checked" value="prod"> Live
+                                    </label>
+                                </div>
+                                <h5 class="header-title">LOGIN (Server Training)</h5>
+                                <span class="banner-title"></span>
+                                <br /><br />
+                            </div>
+                        </div>
+                        @if (ViewBag.error == true)
+                        {
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                                Email dan Password anda salah
+                            </div>
+                        }
+                        @if (ViewBag.logout == true)
+                        {
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                                Sukses logout, silahkan login kembali
+                            </div>
+                        }
+                        <form class="form-horizontal">
+                            <div class="form-group row">
+                                <div class="col-lg-12">
+                                    <label for="username" class="control-label">Email</label>
+                                    <input type="text" name="email" id="email" class="form-control" placeholder="masukkan emailmu disini" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-lg-12">
+                                    <label for="password" class="control-label">Password</label>
+                                    <input type="password" name="password" id="password" class="form-control" placeholder="*********" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-lg-12">
+                                    <button type="button" class="btn btn-success" id="btn-login">Login</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="~/login/js/jquery-3.3.1.min.js"></script>
+        <script src="~/login/js/popper.min.js"></script>
+        <script src="~/login/js/bootstrap.min.js"></script>
+        <script src="~/login/js/main.js"></script>
+        <script>
+            $(document).ready(function () {
+                $("#btn-login").click(function () {
+                    $.ajax(
+                    {
+                      type: "POST",
+                      url: '@Url.Action("Validate", "Account")',
+                      data: {
+                        email: $('#email').val(),
+                        password: $('#password').val()
+                      },
+                      error: function (result) {
+                        alert("There is a Problem, Try Again!");
+                      },
+                      success: function (result) {
+                        console.log(result);
+                        if (result.status == true) {
+                          window.location.href = '@Url.Action("Welcome", "AspNetCore")';
+                        }
+                        else {
+                          alert(result.message);
+                        }
+                      }
+                    });
+                });
+            });
+        </script>
+</body>
+</html>
+

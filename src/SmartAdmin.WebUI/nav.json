@@ -1,0 +1,34 @@
+{
+  "version": "4.5",
+  "lists": [
+    {
+      "title": "ASP.NET Core 3.1",
+      "roles": []
+    },
+    {
+      "title": "Welcome",
+      "href": "aspnetcore_welcome.html",
+      "icon": "fal fa-graduation-cap",
+      "roles": []
+    },
+    {
+      "title": "Access Role",
+      "icon": "fal fa-folder-open",
+      "roles": [],
+      "items": [
+        {
+          "title": "Planner",
+          "showOnSeed": false,
+          "href": "aspnetcore_planner.html",
+          "roles": []
+        },
+        {
+          "title": "Supervisor",
+          "showOnSeed": false,
+          "href": "aspnetcore_supervisor.html",
+          "roles": []
+        }
+      ]
+    }
+  ]
+}
