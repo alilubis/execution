@@ -199,8 +199,8 @@
                             @foreach (var item in ViewBag.NewProject)
                             {
                                 <tr>
-                                    <td>@string.Format("{0:dd/MM/yyyy}",item.start_date)</td>
                                     <td>@item.description</td>
+                                    <td>@item.id / 2</td>
                                 </tr>
                             }
                         </tbody>
