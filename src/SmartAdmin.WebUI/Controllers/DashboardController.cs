@@ -21,9 +21,11 @@ namespace SmartAdmin.WebUI.Controllers
             ViewBag.Finish = _db.Project.Where(p => p.status == 23).Count();
             ViewBag.FinishTagihan = _db.Project.Where(p => p.status == 31).Count();
 
-            ViewBag.NewProject = _db.Project.Where(p => p.status == 22 || p.status == 30).ToList();
+            ViewBag.NewProject = _db.Project
+                .Where(p => p.status == 22 || p.status == 30)
+                .Take(10).ToList();
             ViewBag.ProgressTagihan = _db.Project
-                .Where(p => p.status == 22 || p.status == 23 || p.status == 30 || p.status == 31)
+                .Where(p => p.status == 22 || p.status == 23 || p.status == 30 || p.status == 31).Take(10)
                 .ToList();
 
             var TotalRKU = _db.Project.Where(p => p.status == 20 || p.status == 31)
