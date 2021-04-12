@@ -12,7 +12,7 @@ namespace SmartAdmin.WebUI.Models
         public string password { get; set; }
         public Int16 status { get; set; }
         public string department { get; set; }
-        public string? photo { get; set; }
+        public string photo { get; set; }
         public int discipline_id { get; set; }
         public string role { get; set; }
         public DateTime? created_at { get; set; }

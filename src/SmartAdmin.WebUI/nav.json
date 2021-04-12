@@ -6,9 +6,9 @@
       "roles": []
     },
     {
-      "title": "Welcome",
-      "href": "aspnetcore_welcome.html",
-      "icon": "fal fa-graduation-cap",
+      "title": "Dashboard",
+      "href": "dashboard_index.html",
+      "icon": "fal fa-home",
       "roles": []
     },
     {

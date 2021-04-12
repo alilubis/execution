@@ -103,7 +103,7 @@
                       success: function (result) {
                         console.log(result);
                         if (result.status == true) {
-                          window.location.href = '@Url.Action("Welcome", "AspNetCore")';
+                          window.location.href = '@Url.Action("Index", "Dashboard")';
                         }
                         else {
                           alert(result.message);

@@ -1,0 +1,226 @@
+@{ 
+	ViewData["Title"] = "Analytics Dashboard";
+	ViewData["PageName"] = "intel_analytics_dashboard";
+	ViewData["Category1"] = "Application Intel";
+	ViewData["Heading"] = "<i class='subheader-icon fal fa-home'></i> Dashboard";
+}
+@section HeadBlock {
+<link rel="stylesheet" media="screen, print" href="~/css/miscellaneous/reactions/reactions.css">
+<link rel="stylesheet" media="screen, print" href="~/css/miscellaneous/fullcalendar/fullcalendar.bundle.css">
+<link rel="stylesheet" media="screen, print" href="~/css/miscellaneous/jqvmap/jqvmap.bundle.css">
+}
+@section SubheaderBlock {  
+@* <div class="subheader-block d-lg-flex align-items-center">
+	<div class="d-inline-flex flex-column justify-content-center mr-3">
+		<span class="fw-300 fs-xs d-block opacity-50">
+			<small>EXPENSES</small> 
+		</span>
+		<span class="fw-500 fs-xl d-block color-primary-500">
+			$47,000
+		</span>
+	</div>
+	<span class="sparklines hidden-lg-down" sparkType="bar" sparkBarColor="#886ab5" sparkHeight="32px" sparkBarWidth="5px" values="3,4,3,6,7,3,3,6,2,6,4"></span>
+</div>
+<div class="subheader-block d-lg-flex align-items-center border-faded border-right-0 border-top-0 border-bottom-0 ml-3 pl-3">
+	<div class="d-inline-flex flex-column justify-content-center mr-3">
+		<span class="fw-300 fs-xs d-block opacity-50">
+			<small>MY PROFITS</small> 
+		</span>
+		<span class="fw-500 fs-xl d-block color-danger-500">
+			$38,500
+		</span>
+	</div>
+	<span class="sparklines hidden-lg-down" sparkType="bar" sparkBarColor="#fe6bb0" sparkHeight="32px" sparkBarWidth="5px" values="1,4,3,6,5,3,9,6,5,9,7"></span>
+</div> *@
+}
+<div class="row">
+	<div class="col-lg-6">
+        <div id="panel-1" class="panel" data-panel-lock="false" data-panel-close="false" data-panel-fullscreen="false" data-panel-collapsed="false" data-panel-color="false" data-panel-locked="false" data-panel-refresh="false" data-panel-reset="false">
+            <div class="panel-hdr"> 
+                <h2>Project Aktif</h2>
+            </div>
+            <div class="panel-container show">
+                <div class="panel-content border-faded border-left-0 border-right-0 border-top-0">
+                    <div class="row no-gutters">
+                        <div class="col-lg-6">
+                            <div class="row no-gutters">
+                                <div class="col-lg-12">
+                                    <h1 class="fw-900">@ViewBag.Active</h1>
+                                    <h6 class="fw-900">Project yang saat ini dikerjakan oleh anda</h6>
+                                </div>
+                            </div>
+                            <div class="row no-gutters mt-5">
+                                <div class="col-lg-6">
+                                    <img src="~/img/dashboard/selesai.png" class="img-fluid img-icon mb-2" alt="Responsive image">
+                                    <h5 class="fw-300">Project Selesai</h5>
+                                    <h6 class="fw-900">@ViewBag.Finish</h6>
+                                </div>
+                                <div class="col-lg-6">
+                                    <img src="~/img/dashboard/tagihan.png" class="img-fluid img-icon mb-2" alt="Responsive image">
+                                    <h5 class="fw-300">Tagihan Selesai</h5>
+                                    <h6 class="fw-900">30</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <img src="~/img/dashboard/avatar.png" class="img-fluid img-icon float-right" alt="Responsive image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+		
+	</div>
+	<div class="col-lg-3">
+		<div class="card bg-success text-white p-3 mb-2">
+			<div class="row">
+				<div class="col-lg-7">
+					<h5 class="fw-400">Project On Schedule</h5>
+					<h1 class="fw-900">44</h1>
+				</div>
+				<div class="col-lg-5">
+					<img src="~/img/checked_icon.png" class="img-fluid img-icon" alt="Responsive image" width="70">
+				</div>
+			</div>
+		</div>
+		<div class="card bg-warning text-white p-3 mb-2">
+			<div class="row">
+				<div class="col-lg-7">
+					<h5 class="fw-400">Project Warning</h5>
+					<h1 class="fw-900">3</h1>
+				</div>
+				<div class="col-lg-5">
+					<img src="~/img/warning_icon.png" class="img-fluid img-icon" alt="Responsive image" width="70">
+				</div>
+			</div>
+		</div>
+		<div class="card bg-danger text-white p-3 mb-2">
+			<div class="row">
+				<div class="col-lg-7">
+					<h5 class="fw-400">Project Overdue</h5>
+					<h1 class="fw-900">3</h1>
+				</div>
+				<div class="col-lg-5">
+					<img src="~/img/closed_icon.png" class="img-fluid img-icon" alt="Responsive image" width="70">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-3">
+		<div id="panel-1" class="panel" data-panel-lock="false" data-panel-close="false" data-panel-fullscreen="false" data-panel-collapsed="false" data-panel-color="false" data-panel-locked="false" data-panel-refresh="false" data-panel-reset="false">
+			<div class="panel-hdr"> 
+				<h2>Inisiasi Project Aktif Saya</h2>
+			</div>
+			<div class="panel-container show">
+				<div class="panel-content">
+					<div class="row mb-g">
+						<div class="col-md-12 mr-lg-auto">
+							<div class="d-flex mt-2 mb-1 fs-xs">
+								RKU @ViewBag.RKU
+							</div>
+							<div class="progress progress-sm mb-3" style="height: 13.5px;">
+								<div class="progress-bar initiation-bar inititation-0" data-initiation="1" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="@ViewBag.RKU%" style="width: @ViewBag.RKU%;">@ViewBag.RKU%</div>
+							</div>
+							<div class="d-flex mt-2 mb-1 fs-xs">
+								RKAP
+							</div>
+							<div class="progress progress-sm mb-3" style="height: 13.5px;">
+								<div class="progress-bar bg-info-500 initiation-bar inititation-1" data-initiation="2" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="@ViewBag.RKAP%" style="width: @ViewBag.RKAP%;">@ViewBag.RKAP%</div>
+							</div>
+							<div class="d-flex mt-2 mb-1 fs-xs">
+								MOC
+							</div>
+							<div class="progress progress-sm mb-3" style="height: 13.5px;">
+								<div class="progress-bar bg-success-500 initiation-bar inititation-2" data-initiation="3" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="@ViewBag.MOC%" style="width: @ViewBag.MOC%;">@ViewBag.MOC%</div>
+							</div>
+							<div class="d-flex mt-2 mb-1 fs-xs">
+								Surat Urgent
+							</div>
+							<div class="progress progress-sm mb-3" style="height: 13.5px;">
+								<div class="progress-bar bg-danger-500 initiation-bar inititation-3" data-initiation="4" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="@ViewBag.SU%" style="width: @ViewBag.SU%;">@ViewBag.SU%</div>
+							</div>
+							<div class="d-flex mt-2 mb-1 fs-xs">
+								Non RKAP
+							</div>
+							<div class="progress progress-sm mb-3" style="height: 13.5px;">
+								<div class="progress-bar bg-warning-500 initiation-bar inititation-4" data-initiation="5" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="@ViewBag.NonRKAP%" style="width: @ViewBag.NonRKAP%;">@ViewBag.NonRKAP%</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+    <div class="col-lg-6">
+        <div id="panel-1" class="panel" data-panel-lock="false" data-panel-close="false" data-panel-fullscreen="false" data-panel-collapsed="false" data-panel-color="false" data-panel-locked="false" data-panel-refresh="false" data-panel-reset="false">
+            <div class="panel-hdr"> 
+                <h2>Project Baru</h2>
+            </div>
+            <div class="panel-container show">
+                <div class="panel-content border-faded border-left-0 border-right-0 border-top-0">
+                    <table class="table table-sm m-0">
+                        <thead class="bg-primary-500">
+                            <tr>
+                                <th>Tanggal</th>
+                                <th>Project</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ViewBag.NewProject)
+                            {
+                                <tr>
+                                    <td>@string.Format("{0:dd/MM/yyyy}",item.start_date)</td>
+                                    <td>@item.description</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div id="panel-1" class="panel" data-panel-lock="false" data-panel-close="false" data-panel-fullscreen="false" data-panel-collapsed="false" data-panel-color="false" data-panel-locked="false" data-panel-refresh="false" data-panel-reset="false">
+            <div class="panel-hdr"> 
+                <h2>Progress Tagihan</h2>
+            </div>
+            <div class="panel-container show">
+                <div class="panel-content border-faded border-left-0 border-right-0 border-top-0">
+                    <table class="table table-sm m-0">
+                        <thead class="bg-primary-500">
+                            <tr>
+                                <th>Project</th>
+                                <th>Progress</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ViewBag.NewProject)
+                            {
+                                <tr>
+                                    <td>@string.Format("{0:dd/MM/yyyy}",item.start_date)</td>
+                                    <td>@item.description</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section ScriptsBlock {
+	<script type="text/javascript">
+	</script>
+	<script src="~/js/dependency/moment/moment.js"></script>	
+	<script src="~/js/miscellaneous/fullcalendar/fullcalendar.bundle.js"></script>
+	<script src="~/js/statistics/sparkline/sparkline.bundle.js"></script>
+	<script src="~/js/statistics/easypiechart/easypiechart.bundle.js"></script>
+	<script src="~/js/statistics/flot/flot.bundle.js"></script>
+	<script src="~/js/miscellaneous/jqvmap/jqvmap.bundle.js"></script>
+	<script>
+		
+	</script>
+}

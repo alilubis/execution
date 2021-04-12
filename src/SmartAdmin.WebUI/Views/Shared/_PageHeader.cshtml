@@ -41,29 +41,6 @@
 				<i class="@(Settings.Theme.IconPrefix) fa-search"></i>
 			</a>
 		</div>
-		@if (Settings.Features.LayoutSettings)
-{
-		<div class="hidden-md-down">
-			<a href="#" class="header-icon" data-toggle="modal" data-target=".js-modal-settings">
-				<i class="@(Settings.Theme.IconPrefix) fa-cog"></i>
-			</a>
-		</div>	
-		}
-		<div>
-			<a href="#" class="header-icon" data-toggle="dropdown" title="My Apps">
-				<i class="@(Settings.Theme.IconPrefix) fa-cube"></i>
-			</a>
-			<div class="dropdown-menu dropdown-menu-animated w-auto h-auto">
-				<partial name="_DropdownApp"/>
-			</div>
-		</div>
-		@if (Settings.Features.ChatInterface)
-{
-		<a href="#" class="header-icon" data-toggle="modal" data-target=".js-modal-messenger">
-			<i class="@(Settings.Theme.IconPrefix) fa-globe"></i>
-			<span class="badge badge-icon">!</span>
-		</a>
-		}
 		<div>
 			<a href="#" class="header-icon" data-toggle="dropdown" title="You got 11 notifications">
 				<i class="@(Settings.Theme.IconPrefix) fa-bell"></i>
