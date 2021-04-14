@@ -23,11 +23,11 @@ namespace SmartAdmin.WebUI.Controllers
         }
         public ActionResult Validate(Users user)
         {
-            var _user = _context.Users
-            .Where(s => s.email == user.email)
-            .Where(s => s.role == "execution" || s.role == "execution_spv_rotating" || s.role == "execution_spv_mekanik" || s.role == "execution_spv_sipil" || s.role == "execution_spv_ei")
-            .SingleOrDefault();
-            return Json(new { status = true, message = _user });
+            // var _user = _context.Users
+            // .Where(s => s.email == user.email)
+            // .Where(s => s.role == "execution" || s.role == "execution_spv_rotating" || s.role == "execution_spv_mekanik" || s.role == "execution_spv_sipil" || s.role == "execution_spv_ei")
+            // .SingleOrDefault();
+            return Json(new { status = true, message = "makan" });
             // if (_user != null)
             // {
             //     if (_user.password == user.password)
