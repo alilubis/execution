@@ -32,19 +32,19 @@ namespace SmartAdmin.WebUI.Controllers
             {
                 if (_user.password == user.password)
                 {
-                    var userClaims = new List<Claim>()
-                    {
-                        new Claim("UserName", _user.name),
-                        new Claim(ClaimTypes.Name, _user.name),
-                        new Claim(ClaimTypes.Email, _user.email),
-                        new Claim("ma", Convert.ToString(_user.maintenance_area_id)),
-                        new Claim("roles", _user.role),
-                        new Claim("UserId", Convert.ToString(_user.id)),
-                        new Claim(ClaimTypes.Role, _user.role)
-                    };
-                    var userIdentity = new ClaimsIdentity(userClaims, "User Identity");
-                    var userPrincipal = new ClaimsPrincipal(new[] { userIdentity });
-                    HttpContext.SignInAsync(userPrincipal);
+                    // var userClaims = new List<Claim>()
+                    // {
+                    //     new Claim("UserName", _user.name),
+                    //     new Claim(ClaimTypes.Name, _user.name),
+                    //     new Claim(ClaimTypes.Email, _user.email),
+                    //     new Claim("ma", Convert.ToString(_user.maintenance_area_id)),
+                    //     new Claim("roles", _user.role),
+                    //     new Claim("UserId", Convert.ToString(_user.id)),
+                    //     new Claim(ClaimTypes.Role, _user.role)
+                    // };
+                    // var userIdentity = new ClaimsIdentity(userClaims, "User Identity");
+                    // var userPrincipal = new ClaimsPrincipal(new[] { userIdentity });
+                    // HttpContext.SignInAsync(userPrincipal);
                     return Json(new { status = true, message = "Login Sukses !" });
                 }
                 else
