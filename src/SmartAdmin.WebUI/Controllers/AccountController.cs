@@ -23,39 +23,39 @@ namespace SmartAdmin.WebUI.Controllers
         }
         public ActionResult Validate(Users user)
         {
-            // return Json(new { status = true, message = "Welcome" });
             var _user = _context.Users
             .Where(s => s.email == user.email)
             .Where(s => s.role == "execution" || s.role == "execution_spv_rotating" || s.role == "execution_spv_mekanik" || s.role == "execution_spv_sipil" || s.role == "execution_spv_ei")
             .SingleOrDefault();
-            if (_user != null)
-            {
-                if (_user.password == user.password)
-                {
-                    // var userClaims = new List<Claim>()
-                    // {
-                    //     new Claim("UserName", _user.name),
-                    //     new Claim(ClaimTypes.Name, _user.name),
-                    //     new Claim(ClaimTypes.Email, _user.email),
-                    //     new Claim("ma", Convert.ToString(_user.maintenance_area_id)),
-                    //     new Claim("roles", _user.role),
-                    //     new Claim("UserId", Convert.ToString(_user.id)),
-                    //     new Claim(ClaimTypes.Role, _user.role)
-                    // };
-                    // var userIdentity = new ClaimsIdentity(userClaims, "User Identity");
-                    // var userPrincipal = new ClaimsPrincipal(new[] { userIdentity });
-                    // HttpContext.SignInAsync(userPrincipal);
-                    return Json(new { status = true, message = "Login Sukses !" });
-                }
-                else
-                {
-                    return Json(new { status = false, message = "Password Tidak Sesuai!" });
-                }
-            }
-            else
-            {
-                return Json(new { status = false, message = "Email Tidak Sesuai!" });
-            }
+            return Json(new { status = true, message = _user });
+            // if (_user != null)
+            // {
+            //     if (_user.password == user.password)
+            //     {
+            //         var userClaims = new List<Claim>()
+            //         {
+            //             new Claim("UserName", _user.name),
+            //             new Claim(ClaimTypes.Name, _user.name),
+            //             new Claim(ClaimTypes.Email, _user.email),
+            //             new Claim("ma", Convert.ToString(_user.maintenance_area_id)),
+            //             new Claim("roles", _user.role),
+            //             new Claim("UserId", Convert.ToString(_user.id)),
+            //             new Claim(ClaimTypes.Role, _user.role)
+            //         };
+            //         var userIdentity = new ClaimsIdentity(userClaims, "User Identity");
+            //         var userPrincipal = new ClaimsPrincipal(new[] { userIdentity });
+            //         HttpContext.SignInAsync(userPrincipal);
+            //         return Json(new { status = true, message = "Login Sukses !" });
+            //     }
+            //     else
+            //     {
+            //         return Json(new { status = false, message = "Password Tidak Sesuai!" });
+            //     }
+            // }
+            // else
+            // {
+            //     return Json(new { status = false, message = "Email Tidak Sesuai!" });
+            // }
         }
         public ActionResult AccessDenied()
         {
