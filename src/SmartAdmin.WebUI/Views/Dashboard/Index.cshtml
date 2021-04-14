@@ -1,7 +1,7 @@
 @{ 
-	ViewData["Title"] = "Analytics Dashboard";
+	ViewData["Title"] = "Dashboard";
 	ViewData["PageName"] = "intel_analytics_dashboard";
-	ViewData["Category1"] = "Application Intel";
+	@* ViewData["Category1"] = "Application Intel"; *@
 	ViewData["Heading"] = "<i class='subheader-icon fal fa-home'></i> Dashboard";
 	ViewData["PageDescription"] = "Hallo <b>"+Context.User.Identity.Name+"</b>. Ini adalah dashboard pekerjaan Anda sebagai <b>"+ViewBag.Role+" di "+ViewBag.MA+"</b> hari ini.";
 }
@@ -35,7 +35,7 @@
 </div> *@
 }
 <div class="row">
-	<div class="col-lg-6">
+	<div class="col-lg-12">
         <div id="panel-1" class="panel" data-panel-lock="false" data-panel-close="false" data-panel-fullscreen="false" data-panel-collapsed="false" data-panel-color="false" data-panel-locked="false" data-panel-refresh="false" data-panel-reset="false">
             <div class="panel-hdr"> 
                 <h2>Project Aktif</h2>

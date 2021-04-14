@@ -4,13 +4,13 @@
 			<img src="~/img/demo/avatars/@(Settings.Theme.Avatar)" class="rounded-circle profile-image" alt="@(Settings.Theme.User)">
 		</span>
 		<div class="info-card-text">
-			<div class="fs-lg text-truncate text-truncate-lg">@(Settings.Theme.User)</div>
-			<span class="text-truncate text-truncate-md opacity-80">@(Settings.Theme.Email)</span>
+			<div class="fs-lg text-truncate text-truncate-lg">@Context.User.Identity.Name</div>
+			<span class="text-truncate text-truncate-md opacity-80">@Context.User.Identity.Name</span>
 		</div>
 	</div>
 </div>
 <div class="dropdown-divider m-0"></div>
-<a href="#" class="dropdown-item" data-action="app-reset">
+@* <a href="#" class="dropdown-item" data-action="app-reset">
 	<span data-i18n="drpdwn.reset_layout">Reset Layout</span>
 </a>
 <a href="#" class="dropdown-item" data-toggle="modal" data-target=".js-modal-settings">
@@ -37,9 +37,9 @@
 		<a href="#?lang=jp" class="dropdown-item" data-action="lang" data-lang="jp">日本語</a>
 		<a href="#?lang=ch" class="dropdown-item" data-action="lang" data-lang="ch">中文</a>
 	</div>
-</div>
+</div> *@
 <div class="dropdown-divider m-0"></div>
 <a class="dropdown-item fw-500 pt-3 pb-3" asp-controller="Account" asp-action="Logout">
 	<span data-i18n="drpdwn.page-logout">Logout</span> 
-	<span class="float-right fw-n">&commat;@(Settings.Theme.Twitter)</span>
+	@* <span class="float-right fw-n">&commat;@(Settings.Theme.Twitter)</span> *@
 </a>

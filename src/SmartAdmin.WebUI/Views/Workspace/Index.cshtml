@@ -1,0 +1,71 @@
+@{ 
+	ViewData["Title"] = "My Workspace";
+	ViewData["PageName"] = "intel_analytics_dashboard";
+	ViewData["Category1"] = "My Projects";
+	ViewData["Heading"] = "<i class='subheader-icon fal fa-briefcase'></i> Project Saya";
+	ViewData["PageDescription"] = "Daftar project yang saya kerjakan dan termonitor langsung oleh management";
+}
+@section HeadBlock {
+    <link rel="stylesheet" media="screen, print" href="~/css/datagrid/datatables/datatables.bundle.css">
+}
+@section SubheaderBlock {  
+@* <div class="subheader-block d-lg-flex align-items-center">
+	<div class="d-inline-flex flex-column justify-content-center mr-3">
+		<span class="fw-300 fs-xs d-block opacity-50">
+			<small>EXPENSES</small> 
+		</span>
+		<span class="fw-500 fs-xl d-block color-primary-500">
+			$47,000
+		</span>
+	</div>
+	<span class="sparklines hidden-lg-down" sparkType="bar" sparkBarColor="#886ab5" sparkHeight="32px" sparkBarWidth="5px" values="3,4,3,6,7,3,3,6,2,6,4"></span>
+</div>
+<div class="subheader-block d-lg-flex align-items-center border-faded border-right-0 border-top-0 border-bottom-0 ml-3 pl-3">
+	<div class="d-inline-flex flex-column justify-content-center mr-3">
+		<span class="fw-300 fs-xs d-block opacity-50">
+			<small>MY PROFITS</small> 
+		</span>
+		<span class="fw-500 fs-xl d-block color-danger-500">
+			$38,500
+		</span>
+	</div>
+	<span class="sparklines hidden-lg-down" sparkType="bar" sparkBarColor="#fe6bb0" sparkHeight="32px" sparkBarWidth="5px" values="1,4,3,6,5,3,9,6,5,9,7"></span>
+</div> *@
+}
+<div class="row">
+    <div class="col-lg-12">
+        <div id="panel-1" class="panel" data-panel-lock="false" data-panel-close="false" data-panel-fullscreen="false" data-panel-collapsed="false" data-panel-color="false" data-panel-locked="false" data-panel-refresh="false" data-panel-reset="false">
+            <div class="panel-hdr"> 
+            </div>
+            <div class="panel-container show">
+                <div class="panel-content border-faded border-left-0 border-right-0 border-top-0">
+                    <table id="dt-basic-example" class="table table-bordered table-hover table-striped w-100">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Status</th>
+                                <th>Deskripsi Project</th>
+                                <th>Tipe</th>
+                                <th>Due Date</th>
+                                <th>Inisiasi</th>
+                                <th>Time Status</th>
+                                <th>Planner Progress</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section ScriptsBlock {
+	<script src="~/js/dependency/moment/moment.js"></script>
+    <script src="~/js/datagrid/datatables/datatables.bundle.js"></script>
+    <script src="~/js/part/workspace_datatable.js"></script>
+    <script>
+	
+</script>
+}

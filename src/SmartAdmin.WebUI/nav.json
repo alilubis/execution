@@ -6,10 +6,23 @@
       "roles": []
     },
     {
-      "title": "Dashboard",
+      "title": "Home",
       "href": "dashboard_index.html",
       "icon": "fal fa-home",
       "roles": []
+    },
+    {
+      "title": "MA Workspace",
+      "icon": "fal fa-briefcase",
+      "roles": [],
+      "items": [
+        {
+          "title": "Project Saya",
+          "showOnSeed": false,
+          "href": "workspace_index.html",
+          "roles": []
+        }
+      ]
     },
     {
       "title": "Access Role",
