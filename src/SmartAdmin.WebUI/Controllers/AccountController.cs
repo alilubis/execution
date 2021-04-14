@@ -33,6 +33,9 @@ namespace SmartAdmin.WebUI.Controllers
                         new Claim("UserName", _user.name),
                         new Claim(ClaimTypes.Name, _user.name),
                         new Claim(ClaimTypes.Email, _user.email),
+                        new Claim("ma", Convert.ToString(_user.maintenance_area_id)),
+                        new Claim("roles", _user.role),
+                        new Claim("UserId", Convert.ToString(_user.id)),
                         new Claim(ClaimTypes.Role, _user.role)
                     };
                     var userIdentity = new ClaimsIdentity(userClaims, "User Identity");

@@ -3,6 +3,7 @@
 	ViewData["PageName"] = "intel_analytics_dashboard";
 	ViewData["Category1"] = "Application Intel";
 	ViewData["Heading"] = "<i class='subheader-icon fal fa-home'></i> Dashboard";
+	ViewData["PageDescription"] = "Hallo <b>"+Context.User.Identity.Name+"</b>. Ini adalah dashboard pekerjaan Anda sebagai <b>"+ViewBag.Role+" di "+ViewBag.MA+"</b> hari ini.";
 }
 @section HeadBlock {
 <link rel="stylesheet" media="screen, print" href="~/css/miscellaneous/reactions/reactions.css">
@@ -58,7 +59,7 @@
                                 <div class="col-lg-6">
                                     <img src="~/img/dashboard/tagihan.png" class="img-fluid img-icon mb-2" alt="Responsive image">
                                     <h5 class="fw-300">Tagihan Selesai</h5>
-                                    <h6 class="fw-900">30</h6>
+                                    <h6 class="fw-900">@ViewBag.FinishTagihan</h6>
                                 </div>
                             </div>
                         </div>
@@ -116,7 +117,7 @@
 					<div class="row mb-g">
 						<div class="col-md-12 mr-lg-auto">
 							<div class="d-flex mt-2 mb-1 fs-xs">
-								RKU @ViewBag.RKU
+								RKU
 							</div>
 							<div class="progress progress-sm mb-3" style="height: 13.5px;">
 								<div class="progress-bar initiation-bar inititation-0" data-initiation="1" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="@ViewBag.RKU%" style="width: @ViewBag.RKU%;">@ViewBag.RKU%</div>

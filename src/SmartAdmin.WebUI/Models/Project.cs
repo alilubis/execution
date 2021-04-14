@@ -10,7 +10,7 @@ namespace SmartAdmin.WebUI.Models
     public class Project
     {
         public decimal id { get; set; }
-        // public int user_id { get; set; }
+        public int user_id { get; set; }
         // public int parent_id { get; set; }
         public int sub_inisiasi_id { get; set; }
         // public int maintenance_area_id { get; set; }
