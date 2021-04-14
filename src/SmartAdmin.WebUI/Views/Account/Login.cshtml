@@ -74,7 +74,7 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-lg-12">
-                                    <button type="button" class="btn btn-success" id="btn-login">Login</button>
+                                    <button type="submit" class="btn btn-success" id="btn-login">Login</button>
                                 </div>
                             </div>
                         </form>
@@ -88,27 +88,26 @@
         <script src="~/login/js/main.js"></script>
         <script>
             $(document).ready(function () {
-                $("#btn-login").click(function () {
-                    $.ajax(
-                    {
-                      type: "POST",
-                      url: '@Url.Action("Validate", "Account")',
-                      data: {
-                        email: $('#email').val(),
-                        password: $('#password').val()
-                      },
-                      error: function (result) {
-                        alert("There is a Problem, Try Again!");
-                      },
-                      success: function (result) {
-                        console.log(result);
-                        if (result.status == true) {
-                          window.location.href = '@Url.Action("Index", "Dashboard")';
+                $(".form-horizontal").submit(function (e) {
+                    e.preventDefault();
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("Validate", "Account")',
+                        data: {
+                            email: $('#email').val(),
+                            password: $('#password').val()
+                        },
+                        error: function (result) {
+                            alert("There is a Problem, Try Again!");
+                        },
+                        success: function (result) {
+                            console.log(result);
+                            if (result.status == true) {
+                                window.location.href = '@Url.Action("Index", "Dashboard")';
+                            } else {
+                                alert(result.message);
+                            }
                         }
-                        else {
-                          alert(result.message);
-                        }
-                      }
                     });
                 });
             });
