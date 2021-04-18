@@ -1,5 +1,6 @@
+var table;
 $(document).ready( function () {
-    $('#dt-basic-example').DataTable({
+    table = $('#dt-basic-example').DataTable({
         "lengthChange": false,
         "searching": true,
         "zeroRecords":    "No matching records found",
@@ -51,7 +52,7 @@ $(document).ready( function () {
                     "<i class='fal fa-ellipsis-h'></i>"+
                 "</a>"+
                 "<div class='dropdown-menu'>"+
-                    "<a class='dropdown-item' href=''>Lihat Project</a>"+
+                    "<a href='javascript:void(0)' class='dropdown-item' onclick=detail_project("+data.id+")>Lihat Project</a>"+
                 "</div>"+
                 "</div>";
             }}
@@ -62,8 +63,7 @@ $(document).ready( function () {
         ],
         order: [[3, "desc"]],
         columnDefs: [
-            { orderable: false, targets: [0, 1, 6, 7] },
-            // { visible: false, targets: [3, 4, 5, 6, 7, 8, 14] }
+            { orderable: false, targets: [0, 1, 5, 6, 7] },
         ],
         dom: "<'row mb-3'<'col-sm-12 col-md-8 d-flex align-items-center justify-content-start'f><'col-sm-12 col-md-4 d-flex align-items-center justify-content-end'B>>" +
             "<'row'<'col-sm-12'tr>>" +
@@ -97,3 +97,14 @@ function limitWords(textToLimit, wordLimit) {
         return finalText+"...";
     } else return textToLimit;
 }
+
+function detail_project(id) {
+    window.open("/workspace/detail?id="+id);
+}
+
+$('#dt-basic-example tbody').on( 'click', 'td:not(:last-child)', function () {
+    var ID = table.row(this).data().id
+    window.open("/workspace/detail?id="+ID);
+} );
+
+$('#dt-basic-example tbody tr').css('cursor', 'pointer');

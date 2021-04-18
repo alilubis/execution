@@ -118,14 +118,14 @@ namespace SmartAdmin.WebUI.Controllers
                     if(status == "active") {
                         Total = Total.Where(p => p.Status == 22 || p.Status == 30);
                     } else if(status == "finish") {
-                        Total.Where(p => p.Status == 23);
+                        Total = Total.Where(p => p.Status == 23);
                     } else if(status == "tagihan") {
-                        Total.Where(p => p.Status == 31);
+                        Total = Total.Where(p => p.Status == 31);
                     }
                     if(DisciplineEI == 13) {
-                        Total.Where(t => t.DisciplineId == 1 || t.DisciplineId == 3);
+                        Total = Total.Where(t => t.DisciplineId == 1 || t.DisciplineId == 3);
                     } else {
-                        Total.Where(t => t.DisciplineId == Discipline);
+                        Total = Total.Where(t => t.DisciplineId == Discipline);
                     }
                     return Total.Count();
             }
@@ -163,9 +163,9 @@ namespace SmartAdmin.WebUI.Controllers
                         }
                     );
                     if(DisciplineEI == 13) {
-                        Total.Where(t => t.DisciplineId == 1 || t.DisciplineId == 3);
+                        Total = Total.Where(t => t.DisciplineId == 1 || t.DisciplineId == 3);
                     } else {
-                        Total.Where(t => t.DisciplineId == Discipline);
+                        Total = Total.Where(t => t.DisciplineId == Discipline);
                     }
                 return 100 * Total.Count() / project;
             }
@@ -204,9 +204,9 @@ namespace SmartAdmin.WebUI.Controllers
                         }
                     );
                     if(DisciplineEI == 13) {
-                        Total.Where(t => t.DisciplineId == 1 || t.DisciplineId == 3);
+                        Total = Total.Where(t => t.DisciplineId == 1 || t.DisciplineId == 3);
                     } else {
-                        Total.Where(t => t.DisciplineId == Discipline);
+                        Total = Total.Where(t => t.DisciplineId == Discipline);
                     }
                 return 100 * Total.Count() / project;
             }
@@ -245,9 +245,9 @@ namespace SmartAdmin.WebUI.Controllers
                         }
                     );
                     if(DisciplineEI == 13) {
-                        Total.Where(t => t.DisciplineId == 1 || t.DisciplineId == 3);
+                        Total = Total.Where(t => t.DisciplineId == 1 || t.DisciplineId == 3);
                     } else {
-                        Total.Where(t => t.DisciplineId == Discipline);
+                        Total = Total.Where(t => t.DisciplineId == Discipline);
                     }
                 return 100 * Total.Count() / project;
             }
@@ -286,9 +286,9 @@ namespace SmartAdmin.WebUI.Controllers
                         }
                     );
                     if(DisciplineEI == 13) {
-                        Total.Where(t => t.DisciplineId == 1 || t.DisciplineId == 3);
+                        Total = Total.Where(t => t.DisciplineId == 1 || t.DisciplineId == 3);
                     } else {
-                        Total.Where(t => t.DisciplineId == Discipline);
+                        Total = Total.Where(t => t.DisciplineId == Discipline);
                     }
                 return 100 * Total.Count() / project;
             }
@@ -327,9 +327,9 @@ namespace SmartAdmin.WebUI.Controllers
                         }
                     );
                     if(DisciplineEI == 13) {
-                        Total.Where(t => t.DisciplineId == 1 || t.DisciplineId == 3);
+                        Total = Total.Where(t => t.DisciplineId == 1 || t.DisciplineId == 3);
                     } else {
-                        Total.Where(t => t.DisciplineId == Discipline);
+                        Total = Total.Where(t => t.DisciplineId == Discipline);
                     }
                 return 100 * Total.Count() / project;
             }
@@ -369,9 +369,9 @@ namespace SmartAdmin.WebUI.Controllers
                         }
                     );
                     if(DisciplineEI == 13) {
-                        Project.Where(t => t.DisciplineId == 1 || t.DisciplineId == 3).Take(10);
+                        Project = Project.Where(t => t.DisciplineId == 1 || t.DisciplineId == 3).Take(10);
                     } else {
-                        Project.Where(t => t.DisciplineId == Discipline).Take(10);
+                        Project = Project.Where(t => t.DisciplineId == Discipline).Take(10);
                     }
                 // return Project.Select(p => new {p.start_date, p.description}).ToList();
                 return Project.Select(p => new Project() {
@@ -416,9 +416,9 @@ namespace SmartAdmin.WebUI.Controllers
                         }
                     );
                     if(DisciplineEI == 13) {
-                        Project.Where(t => t.DisciplineId == 1 || t.DisciplineId == 3);
+                        Project = Project.Where(t => t.DisciplineId == 1 || t.DisciplineId == 3);
                     } else {
-                        Project.Where(t => t.DisciplineId == Discipline);
+                        Project = Project.Where(t => t.DisciplineId == Discipline);
                     }
                 return Project.Select(p => new Project() {
                         start_date = p.start_date,

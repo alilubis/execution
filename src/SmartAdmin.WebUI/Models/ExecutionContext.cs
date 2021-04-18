@@ -14,12 +14,16 @@ namespace SmartAdmin.WebUI.Models
         public DbSet<Project> Project { get; set; }
         public DbSet<MaintenanceAreas> MaintenanceAreas { get; set; }
         public DbSet<SubInitiations> SubInitiations { get; set; }
+        public DbSet<Tasks> Tasks { get; set; }
+        public DbSet<Disciplines> Disciplines { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Users>().ToTable("users", "monitoring");
             modelBuilder.Entity<Project>().ToTable("projects", "monitoring");
             modelBuilder.Entity<MaintenanceAreas>().ToTable("maintenance_areas", "monitoring");
             modelBuilder.Entity<SubInitiations>().ToTable("sub_initiations", "monitoring");
+            modelBuilder.Entity<Disciplines>().ToTable("disciplines", "monitoring");
+            // modelBuilder.Entity<Uraian>().ToTable("Tasks");
         }
     }
 }

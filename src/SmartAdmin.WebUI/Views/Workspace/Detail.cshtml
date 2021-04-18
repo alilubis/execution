@@ -1,0 +1,134 @@
+@{ 
+	ViewData["Title"] = "Detail Projects";
+	ViewData["PageName"] = "workspace_detail";
+	ViewData["Category1"] = "My Workspace";
+	ViewData["Heading"] = "<i class='subheader-icon fal fa-briefcase'></i> Detail Projects";
+	ViewData["PageDescription"] = ViewBag.Project.description;
+}
+@section HeadBlock {
+    <link rel="stylesheet" media="screen, print" href="~/css/datagrid/datatables/datatables.bundle.css">
+	<link href="~/css/x-editable/css/bootstrap-editable.css" rel="stylesheet">
+}
+@section SubheaderBlock {  
+@* <div class="subheader-block d-lg-flex align-items-center">
+	<div class="d-inline-flex flex-column justify-content-center mr-3">
+		<span class="fw-300 fs-xs d-block opacity-50">
+			<small>EXPENSES</small> 
+		</span>
+		<span class="fw-500 fs-xl d-block color-primary-500">
+			$47,000
+		</span>
+	</div>
+	<span class="sparklines hidden-lg-down" sparkType="bar" sparkBarColor="#886ab5" sparkHeight="32px" sparkBarWidth="5px" values="3,4,3,6,7,3,3,6,2,6,4"></span>
+</div>
+<div class="subheader-block d-lg-flex align-items-center border-faded border-right-0 border-top-0 border-bottom-0 ml-3 pl-3">
+	<div class="d-inline-flex flex-column justify-content-center mr-3">
+		<span class="fw-300 fs-xs d-block opacity-50">
+			<small>MY PROFITS</small> 
+		</span>
+		<span class="fw-500 fs-xl d-block color-danger-500">
+			$38,500
+		</span>
+	</div>
+	<span class="sparklines hidden-lg-down" sparkType="bar" sparkBarColor="#fe6bb0" sparkHeight="32px" sparkBarWidth="5px" values="1,4,3,6,5,3,9,6,5,9,7"></span>
+</div> *@
+}
+<div class="row">
+    <div class="col-lg-12">
+        <div id="panel-1" class="panel" data-panel-lock="false" data-panel-close="false" data-panel-fullscreen="false" data-panel-collapsed="false" data-panel-color="false" data-panel-locked="false" data-panel-refresh="false" data-panel-reset="false">
+            <div class="panel-container show">
+                <div class="panel-content">									
+					<ul class="nav nav-tabs" role="tablist">
+						<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#tab_default-1" role="tab">Update Progress</a></li>
+						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab_default-2" role="tab">Tagihan SA & PA</a></li>
+						<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab_default-3" role="tab">Manajemen File</a></li>
+					</ul>
+					<div class="tab-content p-3">
+						<div class="tab-pane fade show active" id="tab_default-1" role="tabpanel">
+							<div class="alert alert-primary" role="alert">
+								<div class="row">
+									<div class="col-lg-10 text-center">
+										<div class="row">
+											<div class="col-lg-3">
+												Tanggal Day One Aktual
+											</div>
+											<div class="col-lg-3">
+												Update terakhir
+											</div>
+											<div class="col-lg-2">
+												Tipe Inisiasi
+											</div>
+											<div class="col-lg-2">
+												Disiplin
+											</div>
+											<div class="col-lg-2">
+												Jenis Kontrak
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-lg-3">
+												<button class="btn btn-default btn-xs">Pilih</button>
+											</div>
+											<div class="col-lg-3">
+												<h6 class="fw-900">12/11/2020 07:44</h6>
+											</div>
+											<div class="col-lg-2">
+												<h6 class="fw-900">@ViewBag.Inisiasi.name</h6>
+											</div>
+											<div class="col-lg-2">
+												<h6 class="fw-900">@ViewBag.Discipline.description</h6>
+											</div>
+											<div class="col-lg-2">
+												<h6 class="fw-900">@(ViewBag.Project.contract_type == "unit_price" ? "Unit Price" : "Lumpsum")</h6>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-2 mt-2">
+										<div class="text-center">
+											<button class="btn btn-dark btn-xs"><i class="fal fa-info-circle"></i> Informasi Project</button>
+										</div>
+									</div>
+								</div>
+								@* <button class="btn btn-primary"><i class="fal fa-file-alt fa-2x"></i></button>  *@
+								@* <h5>Day One</h5><span class="tw-900">20 Kali <i class="fal fa-file-edit"></i></span> *@
+							</div>
+							<table id="dt-basic-example" class="table table-bordered table-hover table-striped w-100">
+								<thead class="thead-dark">
+									<tr>
+										<th>No</th>
+										<th>Uraian Pekerjaan</th>
+										<th>Plan Start Scheduler</th>
+										<th>Plan Finish Scheduler</th>
+										<th>Durasi Plan</th>
+										<th>Plan Finish</th>
+										<th>Durasi Plan</th>
+										<th>Actual Start</th>
+										<th>Actual Finish</th>
+										<th>Durasi Actual</th>
+										<th>Progress</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+						<div class="tab-pane fade" id="tab_default-2" role="tabpanel">
+							Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic. 
+						</div>
+						<div class="tab-pane fade" id="tab_default-3" role="tabpanel">
+							Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork.
+						</div>
+					</div>
+				</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section ScriptsBlock {
+	<script src="~/js/dependency/moment/moment.js"></script>
+    <script src="~/js/datagrid/datatables/datatables.bundle.js"></script>
+	<script src="~/js/x-editable/js/bootstrap-editable.js"></script>
+    <script src="~/js/part/workspace_detail.js"></script>
+
+}
