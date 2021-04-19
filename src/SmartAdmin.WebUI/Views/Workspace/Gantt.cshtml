@@ -1,0 +1,98 @@
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+    <head>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js?v=7.0.12"></script>
+        <script src="https://cdn.dhtmlx.com/edge/dhtmlx.js?v=7.0.13"></script>
+        <script src="~/gantt_7.0.13_commercial/codebase/dhtmlxgantt.js?v=7.0.13"></script>
+        
+        <link id="vendorsbundle" rel="stylesheet" media="screen, print" href="~/css/vendors.bundle.css">
+        <link rel="stylesheet" href="https://cdn.dhtmlx.com/edge/skins/terrace/dhtmlx.css?v=7.0.13">
+        <link href="~/gantt_7.0.13_commercial/codebase/dhtmlxgantt.css?v=7.0.13" rel="stylesheet" />
+        <link href="~/gantt_7.0.13_commercial/samples/common/controls_styles.css" rel="stylesheet" />
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="~/css/workspace/gantt_chart_custom.css" rel="stylesheet" />
+        <!-- baseline -->
+        <script src="~/gantt_7.0.13_commercial/samples/common/data_baselines.js"></script>
+        <!-- export pdf & png -->
+        <script src="https://export.dhtmlx.com/gantt/api.js?v=7.0.13"></script>
+        <style>
+            html, body {
+                /*padding: 0px;
+                margin: 0px;
+                height: 90%;*/
+                height: 100%;
+                padding: 0px;
+                margin: 0px;
+                overflow: hidden;
+            }
+            .gantt_marker {
+                background-color: rgba(255, 0, 0, 0.8);
+            }
+            .gantt_task_line, .gantt_task_link {
+                transition: opacity 200ms;
+            }
+            .overlay_visible .gantt_task_line,
+            .overlay_visible .gantt_task_link {
+                opacity: 0.6;
+            }
+            .gantt_marker.today {
+                background: #ffb121;
+            }
+
+            .baseline {
+                position: absolute;
+                border-radius: 2px;
+                opacity: 0.6;
+                margin-top: -7px;
+                height: 12px;
+                background: #ffd180;
+                border: 1px solid rgb(255, 153, 0);
+            }
+            /* move task lines upper */
+            .gantt_task_line, .gantt_line_wrapper {
+                margin-top: -9px;
+            }
+            .gantt_side_content {
+                margin-bottom: 7px;
+            }
+            .gantt_task_link .gantt_link_arrow {
+                margin-top: -12px
+            }
+            .gantt_side_content.gantt_right {
+                bottom: 0;
+            }
+            /* critical path */
+            @* .gantt_task_cell.week_end {
+                background-color: #EFF5FD;
+            }
+            .gantt_selected .gantt_task_cell.week_end {
+                background-color: #f0e493;
+            } *@
+            .weekend {
+                background: #f4f7f4;
+            }
+
+            .gantt_selected .weekend {
+                background: #f7eb91;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="gantt_here" style='width:100%; height:calc(100vh - 52px); position: relative;'></div>
+        <script>
+            var id = @ViewBag.Id;
+            gantt.load("/workspace/gettask?id=" + id);
+            var dp = new gantt.dataProcessor("/api");
+            dp.init(gantt);
+            dp.setTransactionMode("REST");
+        </script>
+        <script src="~/js/workspace/gantt_chart_custom.js"></script>
+    </body>
+</html>

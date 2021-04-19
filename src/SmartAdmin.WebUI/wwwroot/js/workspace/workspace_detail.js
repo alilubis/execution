@@ -42,13 +42,17 @@ $(document).ready( function () {
                     $(this).attr('data-viewformat', 'dd/mm/yyyy');
                     $(this).attr('data-pk', data.id);
                 }
-                if(colIndex == 7) {
+                if(colIndex == 5) {
                     $(this).attr('data-name', 'startdate');
                     $(this).attr('class', 'startdate');
                     $(this).attr('data-type', 'date');
                     $(this).attr('data-viewformat', 'dd/mm/yyyy');
                     $(this).attr('data-pk', data.id);
+                    // $(this).attr('class', "color-fusion-50");
                 }
+                // if(colIndex == 6) {
+                //     $(this).attr('class', "color-fusion-50");
+                // }
             })
         },
         "columns" : [
@@ -66,20 +70,29 @@ $(document).ready( function () {
                 return moment.duration(end.diff(start)).asDays();
             }},
             { data: function(data) {
-                return '-';
-            }},
-            { data: function(data) {
-                return '-';
-            }},
-            { data: function(data) {
-                return moment(data.startDate).format("DD/MM/YYYY");
+                var content = moment(data.startDate).format("DD/MM/YYYY");
+                if(data.progress > 0) {
+                    return content;
+                } else {
+                    return '<span class="color-fusion-50">'+content+'</span>';
+                }
             }},            
             { data: function(data) {
-                return moment(data.startDate).add(data.duration, 'days').format("DD/MM/YYYY");
+                var content = moment(data.startDate).add(data.duration, 'days').format("DD/MM/YYYY");
+                if(data.progress == 1) {
+                    return content;
+                } else {
+                    return '<span class="color-fusion-50">'+content+'</span>';
+                }
             }},
             { data: "duration", searchable: false, orderable: false },
             { data: function(data) {
-                return '-';
+                var content = (data.progress * 100);
+                if(content == 100) {
+                    return '<span class="color-success-400">'+content+' %</span>';
+                } else {
+                    return '<span class="color-info-400">'+content+' %</span>';
+                }
             }}
         ],
         scrollX: true,
@@ -104,8 +117,8 @@ $(document).ready( function () {
         initComplete: function() {
             $('<a href="javascript:void(0);" class="btn btn-outline-primary btn-icon ml-1"><i class="fal fa-question-circle"></i></a>'+
             '<div class="btn-group ml-1">'+
-            '<button type="button" class="btn btn-primary"><i class="fal fa-table"></i> Tabel</button>'+
-            '<button type="button" class="btn btn-primary"><i class="fal fa-chart-area"></i> Gantt</button>'+
+            '<button type="button" class="btn btn-primary button-tabel-gantt" data-value="table"><i class="fal fa-table"></i> Tabel</button>'+
+            '<button type="button" class="btn btn-primary button-tabel-gantt" data-value="gantt"><i class="fal fa-chart-area"></i> Gantt</button>'+
             '</div>').appendTo('.justify-content-end');
             // $('<select class="form-control" id="example-select">'+
             // '<option>1</option>'+
@@ -217,8 +230,34 @@ $(document).ready( function () {
         success: function (response, newVal) {
             // var start = new moment(response.data.startDate);
             // var durasi = moment.duration(end.diff(start)).asDays();
-            var durasi = moment(response.data.startDate).add(response.data.duration, 'days').format("DD/MM/YYYY");
-            $(this).closest('td').next('td').html(durasi)
+            var content = moment(response.data.startDate).add(response.data.duration, 'days').format("DD/MM/YYYY");
+            var html;
+            if(response.data.progress == 1) {
+                html = content;
+            } else {
+                html = '<span class="color-fusion-50">'+content+'</span>';
+            }
+
+            // var durasi = moment(response.data.startDate).add(response.data.duration, 'days').format("DD/MM/YYYY");
+            $(this).closest('td').next('td').html(html)
         }
 	});
+
+    $(document).on('click', '.button-tabel-gantt', function() {
+        // $(this).find('button').addClass('active');
+        // $(this).find('button').addClass('active');
+        // $(".button-tabel-gantt").each(function(index) {
+            if($(this).data('value') == 'table') {
+                $('*[data-value="table"]').addClass('active');
+                $('*[data-value="gantt"]').removeClass('active');
+                $('.partial-table').addClass('d-block').removeClass('d-none');
+                $('.partial-gantt').addClass('d-none').removeClass('d-block');
+            } else {
+                $('*[data-value="gantt"]').addClass('active');
+                $('*[data-value="table"]').removeClass('active');
+                $('.partial-table').addClass('d-none').removeClass('d-block');
+                $('.partial-gantt').addClass('d-block').removeClass('d-none');
+            }
+        // });
+    })
 });

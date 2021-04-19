@@ -46,18 +46,22 @@ namespace SmartAdmin.WebUI.Controllers
                 data = Project
             });
         }
-        [Authorize]
+        // [Authorize]
         public IActionResult Detail(int Id) {
             var Project = _db.Project.FirstOrDefault(p => p.id == Id);
             var User = _db.Users.FirstOrDefault(u => u.id == Project.user_id);
             ViewBag.Project = Project;
             ViewBag.Inisiasi = _db.SubInitiations.FirstOrDefault(i => i.id == Project.sub_inisiasi_id);
             ViewBag.Discipline = _db.Disciplines.FirstOrDefault(i => i.id == User.discipline_id);
-
+            ViewBag.Tasks = _db.Tasks
+                            .Where(t => t.ParentId != 0)
+                            .Where(t => t.Project_id == Id)
+                            .Select(t => new {t.StartDate})
+                            .Min(t => t.StartDate);
             return View();
         }
 
-        [Authorize]
+        // [Authorize]
         public JsonResult GetTasks(int id){
             var Data = _db.Tasks.Where(t => t.Project_id == id)
                     .Select(t => new {
@@ -66,7 +70,8 @@ namespace SmartAdmin.WebUI.Controllers
                         t.planned_start, 
                         t.planned_end, 
                         t.StartDate, 
-                        t.Duration
+                        t.Duration,
+                        t.Progress
                     }).ToList();
             return Json( new {
                 success = true,
@@ -74,7 +79,7 @@ namespace SmartAdmin.WebUI.Controllers
             });
         }
 
-        [Authorize]
+        // [Authorize]
         [HttpPost]
         public JsonResult UpdateTask() {
             var Data = _db.Tasks.FirstOrDefault(d => d.Id == int.Parse(Request.Form["pk"][0]));
@@ -99,6 +104,26 @@ namespace SmartAdmin.WebUI.Controllers
                 data = Data
             });
         }
+
+        public IActionResult Gantt(int Id) {
+            ViewBag.Id = Id;
+            return View();
+        }
+
+        public JsonResult GetTask(int Id) {
+            var Tasks = _db.Tasks
+                    .Where(t => t.Project_id == Id)
+                    // .Where(t => t.Project_id == id && t.Type == null)
+                    .OrderBy(t => t.SortOrder)
+                    .ToList()
+                    // .Select(t => new WebApiTask{value = t.value}),
+                    .Select(t => (WebApiTask)t);
+            return Json( new {
+                data = Tasks,
+                links = true
+            });
+        }
+
 
     }
 }

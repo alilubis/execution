@@ -8,6 +8,11 @@
 @section HeadBlock {
     <link rel="stylesheet" media="screen, print" href="~/css/datagrid/datatables/datatables.bundle.css">
 	<link href="~/css/x-editable/css/bootstrap-editable.css" rel="stylesheet">
+	<style>
+		.color-fusion-50 {
+			color: #ece7e7 !important;
+		}
+	</style>
 }
 @section SubheaderBlock {  
 @* <div class="subheader-block d-lg-flex align-items-center">
@@ -67,10 +72,10 @@
 										</div>
 										<div class="row">
 											<div class="col-lg-3">
-												<button class="btn btn-default btn-xs">Pilih</button>
+												<h6 class="fw-900">@string.Format("{0:dd/MM/yyyy}", ViewBag.Tasks)</h6>
 											</div>
 											<div class="col-lg-3">
-												<h6 class="fw-900">12/11/2020 07:44</h6>
+												<h6 class="fw-900">-</h6>
 											</div>
 											<div class="col-lg-2">
 												<h6 class="fw-900">@ViewBag.Inisiasi.name</h6>
@@ -89,28 +94,9 @@
 										</div>
 									</div>
 								</div>
-								@* <button class="btn btn-primary"><i class="fal fa-file-alt fa-2x"></i></button>  *@
-								@* <h5>Day One</h5><span class="tw-900">20 Kali <i class="fal fa-file-edit"></i></span> *@
 							</div>
-							<table id="dt-basic-example" class="table table-bordered table-hover table-striped w-100">
-								<thead class="thead-dark">
-									<tr>
-										<th>No</th>
-										<th>Uraian Pekerjaan</th>
-										<th>Plan Start Scheduler</th>
-										<th>Plan Finish Scheduler</th>
-										<th>Durasi Plan</th>
-										<th>Plan Finish</th>
-										<th>Durasi Plan</th>
-										<th>Actual Start</th>
-										<th>Actual Finish</th>
-										<th>Durasi Actual</th>
-										<th>Progress</th>
-									</tr>
-								</thead>
-								<tbody>
-								</tbody>
-							</table>
+							<partial name="PartialTable" />
+							<partial name="PartialGantt" />
 						</div>
 						<div class="tab-pane fade" id="tab_default-2" role="tabpanel">
 							Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic. 
@@ -129,6 +115,6 @@
 	<script src="~/js/dependency/moment/moment.js"></script>
     <script src="~/js/datagrid/datatables/datatables.bundle.js"></script>
 	<script src="~/js/x-editable/js/bootstrap-editable.js"></script>
-    <script src="~/js/part/workspace_detail.js"></script>
+    <script src="~/js/workspace/workspace_detail.js"></script>
 
 }

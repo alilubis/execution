@@ -1,0 +1,15 @@
+<div class="partial-gantt d-none">
+    <div class="row mb-3">
+        <div class="col-sm-12 col-md-6 d-flex align-items-center justify-content-start">
+            
+        </div>
+        <div class="col-sm-12 col-md-6 d-flex align-items-center justify-content-end">
+            <!-- <a href="javascript:void(0);" class="btn btn-outline-primary btn-icon ml-1"><i class="fal fa-question-circle"></i></a>
+            <div class="btn-group ml-1">
+                <button type="button" class="btn btn-primary button-tabel-gantt" data-value="table"><i class="fal fa-table"></i> Tabel</button>
+                <button type="button" class="btn btn-primary button-tabel-gantt" data-value="gantt"><i class="fal fa-chart-area"></i> Gantt</button>
+            </div> -->
+        </div>
+    </div>
+    <iframe src="@Url.Action("Gantt", "Workspace", new { id = ViewBag.Project.id })" width="100%" height="600"></iframe>
+</div>
