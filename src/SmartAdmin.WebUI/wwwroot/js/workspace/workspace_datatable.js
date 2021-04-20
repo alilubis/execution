@@ -1,5 +1,18 @@
 var table;
 $(document).ready( function () {
+    function get_data(id, type, row, meta) {
+        // return 'x '+id;
+        $.get("/workspace/timestatus?id="+id, function(result, status){
+            if(result == 1) {
+                return 'On Time';
+            } else if(result == 2) {
+                return 'Overdue';
+            } else {
+                return '-';
+            } 
+        });
+    }
+
     table = $('#dt-basic-example').DataTable({
         "lengthChange": false,
         "searching": true,
@@ -17,14 +30,30 @@ $(document).ready( function () {
         },
         "columns" : [
             { "data": function(data) {
-                if(data.status == 22 || data.status == 30) {
-                    return '<span class="badge badge-success">New</span>';
-                    /* return '<span class="badge badge-info">In Progress</span>' */
-                } else if (data.status == 23) {
-                    return '<span class="badge badge-dark">Aktif</span>';
+                var task = data.task_duration.filter(function (val) {
+                    if(val.parentId == 0 && val.type == 'project') {
+                        return val.progress;
+                    }
+                });
+                if(task.length > 0) {
+                    var progress = task[0].progress * 100;
+                    if(progress == 100) {
+                        return '<span class="badge badge-dark">Selesai</span>';
+                    } else {
+                        return '<span class="badge badge-info">In Progress</span>';
+                    }
                 } else {
-                    return '<span class="badge badge-info">In Progress</span>';
+                    return '<span class="badge badge-success">New</span>';
                 }
+                
+                // if(data.status == 22 || data.status == 30) {
+                //     return '<span class="badge badge-success">New</span>';
+                //     /* return '<span class="badge badge-info">In Progress</span>' */
+                // } else if (data.status == 23) {
+                //     return '';
+                // } else {
+                //     return '<span class="badge badge-info">In Progress</span>';
+                // }
             }},
             { "data": function(data) {
                 return limitWords(data.description, 4);
@@ -37,15 +66,63 @@ $(document).ready( function () {
                 }
             }},
             { "data": function(data) {
-                return moment(data.due_date).format("DD/MM/YYYY");
+                var date = moment(data.due_date).unix();
+                return (date > 0) ? moment(data.due_date).format("DD/MM/YYYY") : '-';
+                // return moment(data.due_date).format("DD/MM/YYYY");
             }},
             { "data": "inisiasi" },
             { "data": function(data) {
-                return '-';
-            } },
+                if(data.task_duration.length > 0) {
+                    var task = data.task_duration;
+                    var countTaskDuration = [];
+                    var countParentDuration = [];
+                    for(i = 0; i < task.length; i++) {
+                        if(task[i].type == 'task') {
+                            var start = new moment(task[i].planned_start);
+                            var end = new moment(task[i].planned_end);
+                            var baseline_duration = moment.duration(end.diff(start)).asDays();
+                            if(task[i].duration <= baseline_duration) {
+                                countTaskDuration.push(i);
+                            }
+                        }
+                        if(task[i].type == 'project' && task[i].parentId == 0) {
+                            var start = new moment(task[i].planned_start);
+                            var end = new moment(task[i].planned_end);
+                            var baseline_duration = moment.duration(end.diff(start)).asDays();
+                            if(task[i].duration > baseline_duration) {
+                                countParentDuration.push(i);
+                            }
+                        }
+                    }
+                    if(countParentDuration.length > 0) {
+                        return '<span class="text-danger">Warning</span>';
+                    } else {
+                        if(data.count_task == countTaskDuration.length) {
+                            return '<span class="text-success">On Time</span>';
+                        } else {
+                            return '<span class="text-warning">Overdue</span>';
+                        }
+                    }
+                } else {
+                    return '-'
+                }
+            }},
             { "data": function(data) {
-                return '-';
-            } },
+                var task = data.task_duration.filter(function (val) {
+                    if(val.parentId == 0 && val.type == 'project') {
+                        return val.progress;
+                    }
+                });
+                if(task.length > 0) {
+                    var progress = task[0].progress * 100;
+                    return '<div class="progress">'+
+                        '<div class="progress-bar" role="progressbar" style="width: '+progress+'%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">'+progress+'%</div>'+
+                    '</div>';
+                } else {
+                    return '<div class="progress">'+
+                    '<div class="progress-bar" role="progressbar" style="width: 100%;background-color: #f6f6f6;color:#000000;text-align:left;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div></div>';
+                }
+            }},
             { "data": function(data) {
                 return "<div class='dropdown d-inline-block dropleft'>"+
                 "<a href='#' class='btn btn-outline-success btn-icon waves-effect waves-themed btn-sm' data-toggle='dropdown' aria-expanded='true' title='More options'>"+
@@ -64,6 +141,17 @@ $(document).ready( function () {
         order: [[3, "desc"]],
         columnDefs: [
             { orderable: false, targets: [0, 1, 5, 6, 7] },
+            // { targets: 5, render: function(id, row, meta) {
+            //     $.get("/workspace/timestatus?id="+id, function(result, status){
+            //         if(result == 1) {
+            //             return 'On Time';
+            //         } else if(result == 2) {
+            //             return 'Overdue';
+            //         } else {
+            //             return '-';
+            //         } 
+            //     });
+            // }}
         ],
         dom: "<'row mb-3'<'col-sm-12 col-md-8 d-flex align-items-center justify-content-start'f><'col-sm-12 col-md-4 d-flex align-items-center justify-content-end'B>>" +
             "<'row'<'col-sm-12'tr>>" +

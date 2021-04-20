@@ -48,7 +48,9 @@ namespace SmartAdmin.WebUI
             // While having to type '.Value' everywhere is driving me nuts (>_<), using this method means reloaded appSettings.json from disk will not work
             services.AddSingleton(s => s.GetRequiredService<IOptions<SmartSettings>>().Value);
 
-            services.AddDbContext<ExecutionContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DashboardConnection")));
+            services.AddDbContext<ExecutionContext>(options => 
+                options.UseSqlServer(Configuration.GetConnectionString("DashboardConnection"))
+            );
 
             services
                 .AddControllersWithViews();
@@ -84,5 +86,6 @@ namespace SmartAdmin.WebUI
                     "{controller=AspNetCore}/{action=Welcome}");
             });
         }
+
     }
 }

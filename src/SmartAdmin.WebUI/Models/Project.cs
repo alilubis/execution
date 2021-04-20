@@ -29,5 +29,7 @@ namespace SmartAdmin.WebUI.Models
         public DateTime start_date { get; set; }
         // public int is_urgent { get; set; }
         public int status { get; set; }
+
+        // public ICollection<Tasks> Tasks {get;set;}
     }
 }
