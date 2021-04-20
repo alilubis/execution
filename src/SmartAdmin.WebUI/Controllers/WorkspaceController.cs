@@ -46,7 +46,7 @@ namespace SmartAdmin.WebUI.Controllers
                 data = Project
             });
         }
-        // [Authorize]
+        [Authorize]
         public IActionResult Detail(int Id) {
             var Project = _db.Project.FirstOrDefault(p => p.id == Id);
             var User = _db.Users.FirstOrDefault(u => u.id == Project.user_id);
@@ -65,7 +65,7 @@ namespace SmartAdmin.WebUI.Controllers
             return View();
         }
 
-        // [Authorize]
+        [Authorize]
         public JsonResult GetTasks(int id){
             var Data = _db.Tasks.Where(t => t.Project_id == id)
                     .Select(t => new {
@@ -83,7 +83,7 @@ namespace SmartAdmin.WebUI.Controllers
             });
         }
 
-        // [Authorize]
+        [Authorize]
         [HttpPost]
         public JsonResult UpdateTask() {
             var Data = _db.Tasks.FirstOrDefault(d => d.Id == int.Parse(Request.Form["pk"][0]));
@@ -109,11 +109,13 @@ namespace SmartAdmin.WebUI.Controllers
             });
         }
 
+        [Authorize]
         public IActionResult Gantt(int Id) {
             ViewBag.Id = Id;
             return View();
         }
 
+        [Authorize]
         public JsonResult GetTask(int Id) {
             var Tasks = _db.Tasks
                     .Where(t => t.Project_id == Id)
