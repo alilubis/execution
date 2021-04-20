@@ -53,11 +53,15 @@ namespace SmartAdmin.WebUI.Controllers
             ViewBag.Project = Project;
             ViewBag.Inisiasi = _db.SubInitiations.FirstOrDefault(i => i.id == Project.sub_inisiasi_id);
             ViewBag.Discipline = _db.Disciplines.FirstOrDefault(i => i.id == User.discipline_id);
-            ViewBag.Tasks = _db.Tasks
+            var StartDate = _db.Tasks
                             .Where(t => t.ParentId != 0)
                             .Where(t => t.Project_id == Id)
-                            .Select(t => new {t.StartDate})
-                            .Min(t => t.StartDate);
+                            .Select(t => new {t.StartDate});
+            if(StartDate.ToList().Count > 0) {
+                ViewBag.Tasks = StartDate.Min(t => t.StartDate);
+            } else {
+                ViewBag.Tasks = null;
+            }
             return View();
         }
 

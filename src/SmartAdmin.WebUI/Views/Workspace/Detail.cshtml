@@ -72,7 +72,7 @@
 										</div>
 										<div class="row">
 											<div class="col-lg-3">
-												<h6 class="fw-900">@string.Format("{0:dd/MM/yyyy}", ViewBag.Tasks)</h6>
+												<h6 class="fw-900">@(ViewBag.Tasks != null ? string.Format("{0:dd/MM/yyyy}", ViewBag.Tasks) : "-")</h6>
 											</div>
 											<div class="col-lg-3">
 												<h6 class="fw-900">-</h6>
