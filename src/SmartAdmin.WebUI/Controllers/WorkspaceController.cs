@@ -19,7 +19,9 @@ namespace SmartAdmin.WebUI.Controllers
         }
         [Authorize]
         public IActionResult Index() {
-            ViewBag.UserId = User.Claims.FirstOrDefault(c => c.Type == "UserId").Value;
+            var Usr = User.Claims.FirstOrDefault(c => c.Type == "UserId").Value;
+            ViewBag.UserId = Usr;
+            ViewBag.User = _db.Users.FirstOrDefault(u => u.id == decimal.Parse(Usr));
             return View();
         }
         [Authorize]
@@ -185,6 +187,7 @@ namespace SmartAdmin.WebUI.Controllers
 
         [Authorize]
         public JsonResult GetTask(int Id) {
+            int[] Links = new int[] {};
             var Tasks = _db.Tasks
                     .Where(t => t.Project_id == Id)
                     // .Where(t => t.Project_id == id && t.Type == null)
@@ -194,7 +197,8 @@ namespace SmartAdmin.WebUI.Controllers
                     .Select(t => (WebApiTask)t);
             return Json( new {
                 data = Tasks,
-                links = true
+                // data = (Tasks.Any()?Tasks:null),
+                links = Links
             });
         }
 

@@ -142,7 +142,6 @@ $(document).ready( function () {
 		title:'Uraian Pekerjaan',
 		type:'POST',
 		validate:function(value){
-            console.log(value);
 			if($.trim(value) == '')
 			{
 				return 'This field is required';
@@ -282,12 +281,35 @@ var controls = {
 //     todayBtn: "linked",
 // });
 // })
+$('#datepicker-modal-2').datepicker({
+    todayHighlight: true,
+    format: 'dd/mm/yyyy',
+    orientation: "bottom left",
+    autoclose: true,
+    templates: controls
+});
+// enable clear button 
+$('#datepicker-3').datepicker({
+    todayBtn: "linked",
+    clearBtn: true,
+    todayHighlight: true,
+    templates: controls
+});
+// enable clear button for modal demo
+$('#datepicker-modal-3').datepicker({
+    todayBtn: "linked",
+    clearBtn: true,
+    todayHighlight: true,
+    templates: controls
+});
 
 $(document).on('submit', '#dayoneform', function (e) {
     e.preventDefault();
     var id = $('[name=project_id]').val();
     var dayonedate = $('[name=day_one_date]').val();
-    $('#datedayone').html(moment(dayonedate).format("DD/MM/YYYY"));
+    console.log(dayonedate)
+    $('#datedayone').html(dayonedate);
+    // $('#datedayone').html(moment(dayonedate).format("DD/MM/YYYY"));
     $.ajax({
         type: 'POST',
         url: '/workspace/updatedayone',

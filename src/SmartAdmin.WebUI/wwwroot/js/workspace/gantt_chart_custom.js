@@ -36,7 +36,6 @@ $('.dropdown-radio').find('input').change(function() {
         cachedSettings.start_date = config.start_date;
         cachedSettings.end_date = config.end_date;
         cachedSettings.scroll_position = gantt.getScrollState();
-        // console.log(config.start_date);
     }
     function restoreConfig() {
         applyConfig(cachedSettings);
@@ -242,7 +241,6 @@ function getChartScaleRange() {
     var tasksRange = gantt.getSubtaskDates();
     var cells = [];
     var scale = gantt.getScale();
-    // console.log(scale)
     if (!tasksRange.start_date) {
         return scale.trace_x;
     }
@@ -293,8 +291,6 @@ function getChartScaleRangeBaseline() {
     // PlannedEndDate = EndDateList.reduce(function (pre, cur) {
     //     return Date.parse(pre) < Date.parse(cur) ? cur : pre;
     // });
-    // console.log('PlannedStartDate : '+PlannedStartDate)
-    // console.log('PlannedEndDate : '+PlannedEndDate)
 
     if (!values.start) {
         return scale.trace_x;
@@ -317,7 +313,6 @@ function getChartScaleRangeBaseline() {
         $.each(CombineDate, function(i, el){
             if($.inArray(el, newChartScale) === -1) newChartScale.push(el);
         });
-    // console.log(newChartScale)
         return newChartScale;
     }
   // End of GetProgressLinePlanned
@@ -326,7 +321,6 @@ function getChartScaleRangeBaseline() {
     var scale = gantt.getScale();
     var step = scale.unit;
     var totalValue = 0;
-    // console.log(scale)
 
     var timegrid = {};
     var timegridBaseline = {};
@@ -344,12 +338,9 @@ function getChartScaleRangeBaseline() {
         // gantt.updateTask(task.id);
         if (!gantt.isSummaryTask(task)) {
             var task = gantt.getTask(task.id);
-            // console.log('task id : '+task.id+', percentage : '+task.percentage+', value : '+task.value);
             task.percentage = (task.value/totalValue);
             gantt.updateTask(task.id);
             // var tasktwo = gantt.getTask(task.id);
-            // console.log('task id : '+tasktwo.id+', percentage : '+tasktwo.percentage+', total value : '+totalValue);
-            // console.log('');
 
         }
 
@@ -359,7 +350,6 @@ function getChartScaleRangeBaseline() {
         if (!task.duration) {
             return;
         }
-        // console.log('planned_start: '+task.planned_start)
 
         // Start of Baseline
         var baselineDate = gantt.date[scale.unit + "_start"](new Date(task.planned_start));
@@ -378,7 +368,6 @@ function getChartScaleRangeBaseline() {
                 };
             }
             baselineDuration = gantt.calculateDuration(task.planned_start, task.planned_end);
-            // console.log('baselineDuration '+baselineDuration);
             // timegridBaseline[timestamp].baseline += 1;
             timegridBaseline[timestamp].baseline += (task.percentage/baselineDuration);
             // timegridBaseline[timestamp].baseline += (task.percentage/task.duration);
@@ -386,11 +375,9 @@ function getChartScaleRangeBaseline() {
             //     timegrid[timestamp].real += (task.percentage/task.duration) * (task.progress || 0);
             // }
         }
-        // console.log(timegridBaseline)
         // End of Baseline
 
         var currDate = gantt.date[scale.unit + "_start"](new Date(task.start_date));
-        // console.log(task.end_date)
         while (currDate < task.end_date) {
             var date = currDate;
             currDate = gantt.date.add(currDate, 1, step);
@@ -418,7 +405,6 @@ function getChartScaleRangeBaseline() {
             totalDuration += 1;
 
         }
-        // console.log(timegrid)
     });
 
     var cumulativePlannedDurations = [];
@@ -446,7 +432,6 @@ function getChartScaleRangeBaseline() {
     
     // for (var i = 0; i < chartS.length; i++) {
     for (var i = 0; i < chartS.length; i++) {
-        // console.log(i)
         // start = new Date(chartS[i]);
         start = new Date(chartS[i]);
         end = gantt.date.add(start, 1, step);
@@ -758,7 +743,6 @@ gantt.addTaskLayer({
         render: function draw_planned(task) {
             if (task.planned_start && task.planned_end) {
                 var sizes = gantt.getTaskPosition(task, task.planned_start, task.planned_end);
-                // console.log(sizes);
                 var el = document.createElement('div');
                 el.className = 'baseline';
                 el.style.left = sizes.left + 'px';

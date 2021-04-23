@@ -1,3 +1,4 @@
+var role = $('#dt-basic-example').data('role');
 var table;
 $(document).ready( function () {
     table = $('#dt-basic-example').dataTable({
@@ -187,19 +188,30 @@ $(document).ready( function () {
         }],
         initComplete: function() {
             var user = $('#dt-basic-example').data('user');
+            var discipline;
             $('<button type="button" class="btn btn-primary waves-effect waves-themed float-right ml-1" data-toggle="modal" data-target="#modal-filter"><i class="fal fa-filter"></i> Filter</button>').appendTo('.justify-content-end');
-            $('<div class="custom-control custom-switch ml-1"><input type="checkbox" class="custom-control-input myproject" name="myproject" value="'+user+'" onchange="filtermyproject()" id="filtermyproject21"><label class="custom-control-label" for="filtermyproject21">Hanya Project Saya</label></div>').appendTo('.justify-content-start');
+            if (role == "execution") {
+                $('<div class="custom-control custom-switch ml-1"><input type="checkbox" class="custom-control-input myproject" name="myproject" value="'+user+'" onchange="filtermyproject()" id="filtermyproject21"><label class="custom-control-label" for="filtermyproject21">Hanya Project Saya</label></div>').appendTo('.justify-content-start');
+            } else {
+                if (role == "execution_spv_rotating") {
+                    discipline = 'Rotating';
+                } else if (role == "execution_spv_mekanik") {
+                    discipline = 'Mekanik';
+                } else if (role == "execution_spv_sipil") {
+                    discipline = 'Sipil';
+                } else if (role == "execution_spv_ei") {
+                    discipline = 'Electrical|Instrumen';
+                }
+                $('<div class="custom-control custom-switch ml-1"><input type="checkbox" class="custom-control-input supervisor-discipline" name="discipline" value="'+discipline+'" onchange="filterdiscipline()" id="filtermyproject211"><label class="custom-control-label" for="filtermyproject211">Hanya Project Saya</label></div>').appendTo('.justify-content-start');
+            }
         }
     }); 
-    // $("#filtermyproject21").trigger("click");
-    // filtermyproject();
 
 });
 
-// filtermyproject();
+$('.myproject').val($('#dt-basic-example').data('user'));
 
 function filtermyproject() {
-    $('.myproject').val($('#dt-basic-example').data('user'));
 
     //build a regex filter string with an or(|) condition
     var types = $('input:checkbox[name="myproject"]:checked').map(function() {
@@ -238,23 +250,36 @@ function filterinisiasi() {
 }
 
 function filterdiscipline() {
+    if (role != "execution") {
+        if ($('.supervisor-discipline').is(':checked')) {
+            var dis = $('.supervisor-discipline:checked').val().split("|");
+
+            for (var i = 0; i < dis.length; i++) {
+                $('.discipline-' + dis[i]).prop('checked', true);
+            }
+        } else {
+            var dis = $('.supervisor-discipline').val().split("|");
+
+            for (var i = 0; i < dis.length; i++) {
+                $('.discipline-' + dis[i]).prop('checked', false);
+            }
+        }
+    }
+
     var types = $('input:checkbox[name="discipline"]:checked').map(function(index, val) {
         return '^' + this.value + '\$';
     }).get().join('|');
+    console.log(types)
     table.fnFilter(types, 3, true, false, false, false);
-
-    // if (role != "planner" || role != "admin") {
-    //     var DisiplinArr = new Array();
-    //     $('input[name="discipline"]:checked').each(function() {
-    //         DisiplinArr.push(this.value);
-    //     });
-    //     if (arraysEqual(DisiplinArr, $('.supervisor-discipline').val().split("|"))) {
-    //         $('.supervisor-discipline').prop('checked', true);
-    //     } else {
-    //         $('.supervisor-discipline').prop('checked', false);
-    //     }
-    // }
 }
+
+// function filtermydiscipline() {
+//     // $('.supervisor-discipline').val($('#dt-basic-example').data('role'));
+//     var types = $('input:checkbox[name="discipline"]:checked').map(function(index, val) {
+//         return '^' + this.value + '\$';
+//     }).get().join('|');
+//     table.fnFilter(types, 3, true, false, false, false);
+// }
 
 
 function filtertime(status) {

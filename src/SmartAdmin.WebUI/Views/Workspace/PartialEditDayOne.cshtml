@@ -40,47 +40,68 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group row">
+                    <div class="form-group">
+                        <label class="form-label" for="datepicker-modal-2">Select a date</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text fs-xl"><i class="fal fa-calendar"></i></span>
+                            </div>
+                            <input type="text" name="day_one_date" id="datepicker-modal-2" class="form-control" placeholder="Select a date" aria-label="date" aria-describedby="datepicker-modal-2">
+                        </div>
+                    </div>
+
+                    @* <div class="form-group row">
                         <label class="col-form-label col-12 col-lg-3 form-label text-lg-right">Tanggal</label>
                         <div class="col-12 col-lg-6 ">
                             <input type="date" class="form-control" name="day_one_date" id="datepicker-1" placeholder="Select date">
                         </div>
-                    </div>
+                    </div> *@
                 </div>
                 <div class="modal-footer">
-                    @* <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> *@
                     <button type="submit" class="btn btn-primary btn-day-one">Save changes</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-@* <div class="modal fade" id="default-example-modal" tabindex="-1" role="dialog" aria-hidden="true">
+@* 
+<div class="modal fade" id="default-example-modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form method="post" asp-controller="workspace" asp-action="changestartdate">
-                <div class="modal-header">
-                    <h4 class="modal-title">Ganti Start Date</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true"><i class="@(Settings.Theme.IconPrefix) fa-times"></i></span>
-                    </button>
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Date picker inside modal
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label" for="datepicker-modal-2">Select a date</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text fs-xl"><i class="fal fa-calendar"></i></span>
+                        </div>
+                        <input type="text" id="datepicker-modal-2" class="form-control" placeholder="Select a date" aria-label="date" aria-describedby="datepicker-modal-2">
+                    </div>
+                    <span class="help-block">Some help content goes here</span>
                 </div>
-                <div class="modal-body">
-                    <div class="row" style="margin-bottom:10px">
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <label class="form-label" for="datepicker-modal-2">Project Start</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control show-finish-date" name="created_at" autocomplete="off" required="required">
-                                </div>
-                            </div>
+                <div class="form-group">
+                    <label class="form-label" for="datepicker-modal-3">Datepicker with button</label>
+                    <div class="input-group">
+                        <input type="text" id="datepicker-modal-3" class="form-control" placeholder="End date" aria-label="date" aria-describedby="datepicker-modal-3">
+                        <div class="input-group-append">
+                            <span class="input-group-text fs-xl"><i class="fal fa-calendar-alt"></i></span>
                         </div>
                     </div>
+                    <span class="help-block">Some help content goes here</span>
                 </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-success btn-md" style="width:100%">Submit</button>
-                </div>
-            </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
         </div>
     </div>
 </div> *@
