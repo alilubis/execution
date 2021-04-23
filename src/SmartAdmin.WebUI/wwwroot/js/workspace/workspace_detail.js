@@ -261,3 +261,42 @@ $(document).ready( function () {
         // });
     })
 });
+
+var controls = {
+    leftArrow: '<i class="fal fa-angle-left" style="font-size: 1.25rem"></i>',
+    rightArrow: '<i class="fal fa-angle-right" style="font-size: 1.25rem"></i>'
+}
+
+// $(document).on('click', '.default-example-modal', function () {
+//     $('#default-example-modal').modal('show');
+// })
+// $('#default-example-modal').on('shown.bs.modal', function(e) {
+    // console.log('hello')
+// $('.show-finish-date').datepicker({
+//     todayHighlight: true,
+//     templates: controls,
+//     format: 'dd/mm/yyyy',
+//     autoclose: true,
+//     zIndex: 2048,
+//     orientation: "bottom left",
+//     todayBtn: "linked",
+// });
+// })
+
+$(document).on('submit', '#dayoneform', function (e) {
+    e.preventDefault();
+    var id = $('[name=project_id]').val();
+    var dayonedate = $('[name=day_one_date]').val();
+    $('#datedayone').html(moment(dayonedate).format("DD/MM/YYYY"));
+    $.ajax({
+        type: 'POST',
+        url: '/workspace/updatedayone',
+        data: {id: id, dates : dayonedate},
+        cache: false, 
+        success: function (data) {
+            $('#dt-basic-example').dataTable( ).api().ajax.reload();
+            $('#default-example-modal').modal('toggle');
+        }
+    })
+    // console.log(dayonedate);
+})

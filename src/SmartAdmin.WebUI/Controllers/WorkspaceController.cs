@@ -19,6 +19,7 @@ namespace SmartAdmin.WebUI.Controllers
         }
         [Authorize]
         public IActionResult Index() {
+            ViewBag.UserId = User.Claims.FirstOrDefault(c => c.Type == "UserId").Value;
             return View();
         }
         [Authorize]
@@ -32,7 +33,18 @@ namespace SmartAdmin.WebUI.Controllers
                 (pro, ini) => new {
                     status = pro.status,
                     description = pro.description,
+                    discipline = _db.Users.FirstOrDefault(u => u.id == pro.user_id).discipline_id,
+                    disciplinename = _db.Disciplines.FirstOrDefault(d => d.id == (_db.Users.FirstOrDefault(u => u.id == pro.user_id).discipline_id)).description,
+                    username = _db.Users.FirstOrDefault(u => u.id == pro.user_id).name,
+                    user_id = pro.user_id,
+                    po_number = pro.purchase_order_number,
+                    end_date = _db.Tasks
+                                .Where(t => t.Project_id == pro.id)
+                                .Where(t => t.ParentId == 0)
+                                .Max(t => t.planned_end),
+                    vendor = pro.vendor_name,
                     type = pro.type,
+                    contract_type = pro.contract_type,
                     // due_date = pro.Tasks.Where(t => t.Project_id == pro.id).Max(t => t.planned_end),
                     due_date = _db.Tasks.Where(t => t.Project_id == pro.id).Max(t => t.planned_end),
                     inisiasi = ini.name,
@@ -56,33 +68,49 @@ namespace SmartAdmin.WebUI.Controllers
             });
         }
 
-        public int TimeStatus(int Id) {
-            var CheckTask = _db.Tasks.Where(t => t.Project_id == Id).Count();
-            if(CheckTask > 0) {
-                var myIntArray = new List<int>();
+        public JsonResult UpdateDayOne(int id, string dates){
+            var Task = _db.Tasks.Where(t => t.Project_id == id).ToList();
 
-                var CountTask = _db.Tasks.Where(t => t.Project_id == Id)
-                                .Where(t => t.Type == "task")
-                                .Count();
-                // var CountTaskDuration = _db.Tasks
-                var TaskDuration = _db.Tasks.Where(t => t.Project_id == Id)
-                                .Where(t => t.Type == "task")
-                                .Select(t => new { t.planned_start, t.planned_end, t.Duration })
-                                .ToList();
-                foreach(var item in TaskDuration) {
-                    if(item.Duration <= int.Parse((item.planned_end - item.planned_start).TotalDays.ToString())) {
-                        myIntArray.Add(1);
-                    }
-                }
-                if(CountTask == myIntArray.Count()) {
-                    return 1; // On Time
-                } else {
-                    return 2; // Overdue
-                }
-            } else {
-                return 4;
+            foreach(var item in Task) {
+                var Tas = _db.Tasks.FirstOrDefault(t => t.Id == item.Id);
+                Tas.planned_start = DateTime.Parse(dates);
+                Tas.planned_end = DateTime.Parse(dates).AddDays(item.Duration);
+                _db.SaveChanges();
             }
+            // Task.planned_start = DateTime.Parse(dates);
+
+            return Json( new {
+                success = true
+            });
         }
+
+        // public int TimeStatus(int Id) {
+        //     var CheckTask = _db.Tasks.Where(t => t.Project_id == Id).Count();
+        //     if(CheckTask > 0) {
+        //         var myIntArray = new List<int>();
+
+        //         var CountTask = _db.Tasks.Where(t => t.Project_id == Id)
+        //                         .Where(t => t.Type == "task")
+        //                         .Count();
+        //         // var CountTaskDuration = _db.Tasks
+        //         var TaskDuration = _db.Tasks.Where(t => t.Project_id == Id)
+        //                         .Where(t => t.Type == "task")
+        //                         .Select(t => new { t.planned_start, t.planned_end, t.Duration })
+        //                         .ToList();
+        //         foreach(var item in TaskDuration) {
+        //             if(item.Duration <= int.Parse((item.planned_end - item.planned_start).TotalDays.ToString())) {
+        //                 myIntArray.Add(1);
+        //             }
+        //         }
+        //         if(CountTask == myIntArray.Count()) {
+        //             return 1; // On Time
+        //         } else {
+        //             return 2; // Overdue
+        //         }
+        //     } else {
+        //         return 4;
+        //     }
+        // }
 
         [Authorize]
         public IActionResult Detail(int Id) {
@@ -94,9 +122,11 @@ namespace SmartAdmin.WebUI.Controllers
             var StartDate = _db.Tasks
                             .Where(t => t.ParentId != 0)
                             .Where(t => t.Project_id == Id)
-                            .Select(t => new {t.StartDate});
+                            .Select(t => new {t.planned_start});
+                            // .Select(t => new {t.StartDate});
             if(StartDate.ToList().Count > 0) {
-                ViewBag.Tasks = StartDate.Min(t => t.StartDate);
+                ViewBag.Tasks = StartDate.Min(t => t.planned_start);
+                // ViewBag.Tasks = StartDate.Min(t => t.StartDate);
             } else {
                 ViewBag.Tasks = null;
             }

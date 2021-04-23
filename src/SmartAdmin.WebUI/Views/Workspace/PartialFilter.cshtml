@@ -1,0 +1,151 @@
+<div class="modal fade" id="modal-filter" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<form method="post" asp-controller="workspace" asp-action="filterproject">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            Filter
+        </h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true"><i class="fal fa-times"></i></span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="frame-wrap demo">
+            <div class="demo">
+                <div class="panel-content">
+                    <div class="form-row">
+                        <div class="col-md-6 mb-6">
+                            <div class="col">
+                                <label class="form-label" for="validationCustom02">
+                                    Status 
+                                    <i 
+                                        id="icon-popover"
+                                        class="fal fa-question-circle"
+                                        data-toggle="popover"
+                                        data-trigger="hover"
+                                        data-placement="right"
+                                        data-html="true"
+                                        title=""
+                                        data-content="
+                                            <p class='mt-2 mb-0'>
+                                                Aktif = Sedang dikerjakan Planner<br/>
+                                                Aktif - Proc = Sedang dikerjakan Procurement<br/>
+                                                Aktif - Exe = Sedang dikerjakan Procurement dan sedang dikerjakan Eksekusi<br/>
+                                                Aktif - Exe Done = Sedang dikerjakan Procurement dan Eksekusi telah selesai<br/>
+                                                Eksekusi = Fase Procurement Selesai. Project sedang dikerjakan Eksekusi<br/>
+                                                Selesai = Eksekusi telah selesai
+                                            </p>
+                                        "
+                                        data-template='<div class="popover bg-fusion-500 border-dark" role="tooltip"><div class="popover-body text-white"></div></div>'
+                                        data-original-title=""
+                                    ></i>
+                                </label>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input st-new" onchange="filterOnStatus()" id="customSwitch1" name="status" value="New">
+                                    <label class="custom-control-label" for="customSwitch1">New</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input st-progress" onchange="filterOnStatus()" id="customSwitch2" name="status" value="In Progress">
+                                    <label class="custom-control-label" for="customSwitch2">In Progress</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input st-selesai" onchange="filterOnStatus()" id="customSwitch3" name="status" value="Selesai">
+                                    <label class="custom-control-label" for="customSwitch3">Selesai</label>
+                                </div>
+                            </div><br/>
+                            <div class="col">
+                                <label class="form-label" for="validationCustom02">Tipe Kontrak</label>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" onchange="filterOnType()" id="customSwitch25" name="contract_type" value="Lumpsum">
+                                    <label class="custom-control-label" for="customSwitch25">Lumpsum</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" onchange="filterOnType()" id="customSwitch26" name="contract_type" value="Unit Price">
+                                    <label class="custom-control-label" for="customSwitch26">Unit Price</label>
+                                </div>
+                            </div><br/>
+                            <div class="col">
+                                <label class="form-label" for="validationCustom02">Tipe Inisiasi</label>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" onchange="filterinisiasi()" id="customSwitch19" name="inisiasi" value="RKU">
+                                    <label class="custom-control-label" for="customSwitch19">RKU</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" onchange="filterinisiasi()" id="customSwitch20" name="inisiasi" value="RKAP">
+                                    <label class="custom-control-label" for="customSwitch20">RKAP</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" onchange="filterinisiasi()" id="customSwitch21" name="inisiasi" value="MOC">
+                                    <label class="custom-control-label" for="customSwitch21">MOC</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" onchange="filterinisiasi()" id="customSwitch22" name="inisiasi" value="Surat Urgent">
+                                    <label class="custom-control-label" for="customSwitch22">Surat Urgent</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" onchange="filterinisiasi()" id="customSwitch23" name="inisiasi" value="NON RKAP">
+                                    <label class="custom-control-label" for="customSwitch23">NON RKAP</label>
+                                </div>
+                            </div><br/>
+                        </div>
+                        <div class="col-md-6 mb-6">
+                            <div class="col">
+                                <label class="form-label" for="validationCustom02">Disiplin</label>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input discipline-Sipil" onchange="filterdiscipline()" id="customSwitch14" name="discipline" value="Sipil">
+                                    <label class="custom-control-label" for="customSwitch14">Sipil</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input discipline-Instrumen" onchange="filterdiscipline()" id="customSwitch15" name="discipline" value="Instrumen">
+                                    <label class="custom-control-label" for="customSwitch15">Instrumen</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input discipline-Mekanik" onchange="filterdiscipline()" id="customSwitch16" name="discipline" value="Mekanik">
+                                    <label class="custom-control-label" for="customSwitch16">Mekanikal</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input discipline-Electrical" onchange="filterdiscipline()" id="customSwitch17" name="discipline" value="Electrical">
+                                    <label class="custom-control-label" for="customSwitch17">Elektrikal</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input discipline-Rotating" onchange="filterdiscipline()" id="customSwitch18" name="discipline" value="Rotating">
+                                    <label class="custom-control-label" for="customSwitch18">Rotating</label>
+                                </div>
+                            </div><br/>
+                            <div class="col">
+                                <label class="form-label" for="validationCustom02">Time Status</label>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input status-ontime" onchange="filtertime()" id="customSwitchOnTime" name="time_status" value="On Time">
+                                    <label class="custom-control-label" for="customSwitchOnTime">On Time</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input status-warning" onchange="filtertime()" id="customSwitchWarning" name="time_status" value="Warning">
+                                    <label class="custom-control-label" for="customSwitchWarning">Warning</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input status-alert" onchange="filtertime()" id="customSwitchAlert" name="time_status" value="Alert">
+                                    <label class="custom-control-label" for="customSwitchAlert">Alert</label>
+                                </div>
+                            </div><br/>
+                            <div class="col">
+                                <label class="form-label" for="validationCustom02">Tagihan</label>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input tagihan-aktif" onchange="filtertime()" id="customSwitchTagihanAktif" name="tagihan" value="Tagihan Aktif">
+                                    <label class="custom-control-label" for="customSwitchOnTime">Tagihan Aktif</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input tagihan-selesai" onchange="filtertime()" id="customSwitchTagihanSelesai" name="tagihan" value="Tagihan Selesai">
+                                    <label class="custom-control-label" for="customSwitchAlert">Tagihan Selesai</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+</div>
+</div>
+</div>

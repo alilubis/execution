@@ -17,10 +17,10 @@ namespace SmartAdmin.WebUI.Models
         // public string work_order_number { get; set; }
         // public string reference_number { get; set; }
         // public string notification_number { get; set; }
-        // public string purchase_order_number { get; set; }
+        public string purchase_order_number { get; set; }
         // public string purchase_request_number { get; set; }
         // public string spppmk_number { get; set; }
-        // public string vendor_name { get; set; }
+        public string vendor_name { get; set; }
         // public string buyer_name { get; set; }
         public string description { get; set; }
         // public string impact { get; set; }

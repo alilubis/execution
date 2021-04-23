@@ -1,19 +1,6 @@
 var table;
 $(document).ready( function () {
-    function get_data(id, type, row, meta) {
-        // return 'x '+id;
-        $.get("/workspace/timestatus?id="+id, function(result, status){
-            if(result == 1) {
-                return 'On Time';
-            } else if(result == 2) {
-                return 'Overdue';
-            } else {
-                return '-';
-            } 
-        });
-    }
-
-    table = $('#dt-basic-example').DataTable({
+    table = $('#dt-basic-example').dataTable({
         "lengthChange": false,
         "searching": true,
         "zeroRecords":    "No matching records found",
@@ -27,6 +14,13 @@ $(document).ready( function () {
             "url" : "/workspace/data",
             "type" : "GET",
             "datatype" : "json"
+        },
+        createdRow: function(row, data, rowIndex) {
+            $.each($('td', row), function(colIndex) {
+                // if(colIndex == 2) {
+                //     $(this).attr('data-search', data.username);
+                // }
+            })
         },
         "columns" : [
             { "data": function(data) {
@@ -54,9 +48,19 @@ $(document).ready( function () {
                 // } else {
                 //     return '<span class="badge badge-info">In Progress</span>';
                 // }
+                
             }},
             { "data": function(data) {
                 return limitWords(data.description, 4);
+            }},
+            { "data": "username"},
+            { "data": "disciplinename"},
+            { "data": function(data) {
+                if(data.contract_type == 'lumpsum') {
+                    return 'Lumpsum';
+                } else {
+                    return 'Unit Price';
+                }
             }},
             { "data": function(data) {
                 if(data.type == 'jasa') {
@@ -100,7 +104,7 @@ $(document).ready( function () {
                         if(data.count_task == countTaskDuration.length) {
                             return '<span class="text-success">On Time</span>';
                         } else {
-                            return '<span class="text-warning">Overdue</span>';
+                            return '<span class="text-warning">Alert</span>';
                         }
                     }
                 } else {
@@ -124,6 +128,24 @@ $(document).ready( function () {
                 }
             }},
             { "data": function(data) {
+                var date = moment(data.end_date).unix();
+                return (date > 0) ? moment(data.end_date).format("DD/MM/YYYY") : '-';
+            } },
+            { "data": function(data) {
+                if(data.po_number) {
+                    return data.po_number;
+                } else {
+                    return '-';
+                }
+            } },
+            { "data": function(data) {
+                if(data.vendor) {
+                    return data.vendor;
+                } else {
+                    return '-';
+                }
+            } },
+            { "data": function(data) {
                 return "<div class='dropdown d-inline-block dropleft'>"+
                 "<a href='#' class='btn btn-outline-success btn-icon waves-effect waves-themed btn-sm' data-toggle='dropdown' aria-expanded='true' title='More options'>"+
                     "<i class='fal fa-ellipsis-h'></i>"+
@@ -140,7 +162,8 @@ $(document).ready( function () {
         ],
         order: [[3, "desc"]],
         columnDefs: [
-            { orderable: false, targets: [0, 1, 5, 6, 7] },
+            { orderable: false, targets: [0, 1, 2, 3, 4, 5, 6, 7, 9, 11, 12, 13] },
+            { visible: false, targets: [3, 4] }
             // { targets: 5, render: function(id, row, meta) {
             //     $.get("/workspace/timestatus?id="+id, function(result, status){
             //         if(result == 1) {
@@ -163,10 +186,101 @@ $(document).ready( function () {
             className: 'btn-outline-default'
         }],
         initComplete: function() {
+            var user = $('#dt-basic-example').data('user');
             $('<button type="button" class="btn btn-primary waves-effect waves-themed float-right ml-1" data-toggle="modal" data-target="#modal-filter"><i class="fal fa-filter"></i> Filter</button>').appendTo('.justify-content-end');
+            $('<div class="custom-control custom-switch ml-1"><input type="checkbox" class="custom-control-input myproject" name="myproject" value="'+user+'" onchange="filtermyproject()" id="filtermyproject21"><label class="custom-control-label" for="filtermyproject21">Hanya Project Saya</label></div>').appendTo('.justify-content-start');
         }
     }); 
+    // $("#filtermyproject21").trigger("click");
+    // filtermyproject();
+
 });
+
+// filtermyproject();
+
+function filtermyproject() {
+    $('.myproject').val($('#dt-basic-example').data('user'));
+
+    //build a regex filter string with an or(|) condition
+    var types = $('input:checkbox[name="myproject"]:checked').map(function() {
+        // console.log(this.value);
+        return '^' + this.value + '\$';
+    }).get().join('|');
+    // console.log(types)
+    //filter in column 0, with an regex, no smart filtering, no inputbox,not case sensitive
+    table.fnFilter(types, 2, true, false, false, false);
+}
+function filterOnStatus(q) {
+    var status = $('input:checkbox[name="status"]:checked').map(function() {
+        // if (this.value == "Aktif") {
+        //     return '^Aktif$|^Unverified$|^Verified$';
+        // } else if (this.value == "Verified") {
+        //     return '^Aktif$|^Verified$|^Aktif - Proc$|^Aktif - Exe$|^Aktif - Exe Done$|^Eksekusi$|^Addendum Aktif$';
+        // } else {
+            return '^' + this.value + '\$';
+        // }
+    }).get().join('|');
+    table.fnFilter(status, 0, true, false, false, false);
+}
+
+function filterOnType() {
+    var types = $('input:checkbox[name="contract_type"]:checked').map(function() {
+        return '^' + this.value + '\$';
+    }).get().join('|');
+
+    table.fnFilter(types, 4, true, false, false, false);
+}
+function filterinisiasi() {
+    var types = $('input:checkbox[name="inisiasi"]:checked').map(function() {
+        return '^' + this.value + '\$';
+    }).get().join('|');
+    table.fnFilter(types, 7, true, false, false, false);
+}
+
+function filterdiscipline() {
+    var types = $('input:checkbox[name="discipline"]:checked').map(function(index, val) {
+        return '^' + this.value + '\$';
+    }).get().join('|');
+    table.fnFilter(types, 3, true, false, false, false);
+
+    // if (role != "planner" || role != "admin") {
+    //     var DisiplinArr = new Array();
+    //     $('input[name="discipline"]:checked').each(function() {
+    //         DisiplinArr.push(this.value);
+    //     });
+    //     if (arraysEqual(DisiplinArr, $('.supervisor-discipline').val().split("|"))) {
+    //         $('.supervisor-discipline').prop('checked', true);
+    //     } else {
+    //         $('.supervisor-discipline').prop('checked', false);
+    //     }
+    // }
+}
+
+
+function filtertime(status) {
+    // if (_.isEmpty(status) == false || _.isUndefined(status) == false) {
+    //     switch (status) {
+    //         case "ontime":
+    //             var types = '^On Time$';
+    //             $('.status-ontime').prop('checked', true);
+    //             break;
+    //         case "alert":
+    //             var types = '^Alert$';
+    //             $('.status-alert').prop('checked', true);
+    //             break;
+    //         case "overdue":
+    //             var types = '^Overdue$';
+    //             $('.status-overdue').prop('checked', true);
+    //             break;
+    //     }
+    // } else {
+        var types = $('input:checkbox[name="time_status"]:checked').map(function() {
+            return '^' + this.value + '\$';
+        }).get().join('|');
+    // }
+    table.fnFilter(types, 12, true, false, false, false);
+}
+
 function truncate(str, no_words) {
     return str.split(" ").splice(0,no_words).join(" ");
 }
@@ -191,7 +305,8 @@ function detail_project(id) {
 }
 
 $('#dt-basic-example tbody').on( 'click', 'td:not(:last-child)', function () {
-    var ID = table.row(this).data().id
+    var ID = table.api().row(this).data().id
+    // console.log(table.api().row(this).data().id);
     window.open("/workspace/detail?id="+ID);
 } );
 

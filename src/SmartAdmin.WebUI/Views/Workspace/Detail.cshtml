@@ -7,11 +7,15 @@
 }
 @section HeadBlock {
     <link rel="stylesheet" media="screen, print" href="~/css/datagrid/datatables/datatables.bundle.css">
-	<link href="~/css/x-editable/css/bootstrap-editable.css" rel="stylesheet">
+	<link rel="stylesheet" media="screen, print" href="~/css/formplugins/bootstrap-datepicker/bootstrap-datepicker.css">
+	<link rel="stylesheet" href="~/css/x-editable/css/bootstrap-editable.css">
 	<style>
 		.color-fusion-50 {
 			color: #ece7e7 !important;
 		}
+		@* .datepicker {
+			z-index: 1600 !important; /* has to be larger than 1050 */
+		} *@
 	</style>
 }
 @section SubheaderBlock {  
@@ -72,7 +76,14 @@
 										</div>
 										<div class="row">
 											<div class="col-lg-3">
-												<h6 class="fw-900">@(ViewBag.Tasks != null ? string.Format("{0:dd/MM/yyyy}", ViewBag.Tasks) : "-")</h6>
+												<h6 class="fw-900">
+													<span id='datedayone'>
+													@(ViewBag.Tasks != null ? string.Format("{0:dd/MM/yyyy}", ViewBag.Tasks) : "-")
+													</span>
+													<button class="btn btn-outline-secondary btn-xs btn-icon waves-effect waves-themed" data-toggle="modal" data-target="#default-example-modal">
+														<i class="fal fa-pencil"></i>
+													</button>
+												</h6>
 											</div>
 											<div class="col-lg-3">
 												<h6 class="fw-900">-</h6>
@@ -110,11 +121,13 @@
         </div>
     </div>
 </div>
+<partial name="PartialEditDayOne" />
 
 @section ScriptsBlock {
 	<script src="~/js/dependency/moment/moment.js"></script>
     <script src="~/js/datagrid/datatables/datatables.bundle.js"></script>
 	<script src="~/js/x-editable/js/bootstrap-editable.js"></script>
+	<script src="~/js/formplugins/bootstrap-datepicker/bootstrap-datepicker.js"></script>
     <script src="~/js/workspace/workspace_detail.js"></script>
 
 }
