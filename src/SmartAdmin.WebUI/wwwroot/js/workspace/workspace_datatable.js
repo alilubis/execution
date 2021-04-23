@@ -202,7 +202,7 @@ $(document).ready( function () {
                 } else if (role == "execution_spv_ei") {
                     discipline = 'Electrical|Instrumen';
                 }
-                $('<div class="custom-control custom-switch ml-1"><input type="checkbox" class="custom-control-input supervisor-discipline" name="discipline" value="'+discipline+'" onchange="filterdiscipline()" id="filtermyproject211"><label class="custom-control-label" for="filtermyproject211">Hanya Project Saya</label></div>').appendTo('.justify-content-start');
+                $('<div class="custom-control custom-switch ml-1"><input type="checkbox" class="custom-control-input supervisor-discipline" name="disciplines" value="'+discipline+'" onchange="filtermydiscipline()" id="filtermyproject211"><label class="custom-control-label" for="filtermyproject211">Hanya Project Saya</label></div>').appendTo('.justify-content-start');
             }
         }
     }); 
@@ -250,9 +250,29 @@ function filterinisiasi() {
 }
 
 function filterdiscipline() {
+    var types = $('input:checkbox[name="discipline"]:checked').map(function(index, val) {
+        return '^' + this.value + '\$';
+    }).get().join('|');
+    console.log(types)
+    table.fnFilter(types, 3, true, false, false, false);
+    if (role != "execution") {
+        var DisiplinArr = new Array();
+        $('input[name="discipline"]:checked').each(function() {
+            DisiplinArr.push(this.value);
+        });
+        if (arraysEqual(DisiplinArr, $('.supervisor-discipline').val().split("|"))) {
+            $('.supervisor-discipline').prop('checked', true);
+        } else {
+            $('.supervisor-discipline').prop('checked', false);
+        }
+    }
+}
+
+function filtermydiscipline() {
+    $('input[name="discipline"]').prop('checked', false);
     if (role != "execution") {
         if ($('.supervisor-discipline').is(':checked')) {
-            var dis = $('.supervisor-discipline:checked').val().split("|");
+            var dis = $('.supervisor-discipline').val().split("|");
 
             for (var i = 0; i < dis.length; i++) {
                 $('.discipline-' + dis[i]).prop('checked', true);
@@ -273,14 +293,27 @@ function filterdiscipline() {
     table.fnFilter(types, 3, true, false, false, false);
 }
 
-// function filtermydiscipline() {
-//     // $('.supervisor-discipline').val($('#dt-basic-example').data('role'));
-//     var types = $('input:checkbox[name="discipline"]:checked').map(function(index, val) {
-//         return '^' + this.value + '\$';
-//     }).get().join('|');
-//     table.fnFilter(types, 3, true, false, false, false);
-// }
 
+function arraysEqual(_arr1, _arr2) {
+    if (!Array.isArray(_arr1) ||
+        !Array.isArray(_arr2) ||
+        _arr1.length !== _arr2.length
+    ) {
+        return false;
+    }
+
+    // .concat() is used so the original arrays are unaffected
+    const arr1 = _arr1.concat().sort();
+    const arr2 = _arr2.concat().sort();
+
+    for (let i = 0; i < arr1.length; i++) {
+        if (arr1[i] !== arr2[i]) {
+            return false;
+        }
+    }
+
+    return true;
+}
 
 function filtertime(status) {
     // if (_.isEmpty(status) == false || _.isUndefined(status) == false) {
