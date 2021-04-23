@@ -39,7 +39,13 @@ namespace SmartAdmin.WebUI.Controllers
                     disciplinename = _db.Disciplines.FirstOrDefault(d => d.id == (_db.Users.FirstOrDefault(u => u.id == pro.user_id).discipline_id)).description,
                     username = _db.Users.FirstOrDefault(u => u.id == pro.user_id).name,
                     user_id = pro.user_id,
+                    hkl_estimation = pro.estimation,
                     po_number = pro.purchase_order_number,
+                    day_one = _db.Tasks
+                            .Where(t => t.ParentId != 0)
+                            .Where(t => t.Project_id == pro.id)
+                            .Select(t => new {t.planned_start})
+                            .Min(t => t.planned_start),
                     end_date = _db.Tasks
                                 .Where(t => t.Project_id == pro.id)
                                 .Where(t => t.ParentId == 0)

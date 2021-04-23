@@ -24,6 +24,7 @@ namespace SmartAdmin.WebUI.Models
         // public string buyer_name { get; set; }
         public string description { get; set; }
         // public string impact { get; set; }
+        public int estimation { get; set; }
         public string type { get; set; }
         public string contract_type { get; set; }
         public DateTime start_date { get; set; }

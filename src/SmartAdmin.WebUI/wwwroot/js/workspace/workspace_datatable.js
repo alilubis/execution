@@ -16,6 +16,7 @@ $(document).ready( function () {
             "type" : "GET",
             "datatype" : "json"
         },
+        "scrollX": true,
         createdRow: function(row, data, rowIndex) {
             $.each($('td', row), function(colIndex) {
                 // if(colIndex == 2) {
@@ -63,19 +64,22 @@ $(document).ready( function () {
                     return 'Unit Price';
                 }
             }},
+            { "data": "hkl_estimation"},
             { "data": function(data) {
-                if(data.type == 'jasa') {
-                    return 'Jasa/ All In';
+                var date = moment(data.day_one).unix();
+                return (date > 0) ? moment(data.day_one).format("DD/MM/YYYY") : '-';
+            }},
+            { "data": function(data) {
+                var date = moment(data.end_date).unix();
+                return (date > 0) ? moment(data.end_date).format("DD/MM/YYYY") : '-';
+            } },
+            { "data": function(data) {
+                if(data.vendor) {
+                    return data.vendor;
                 } else {
-                    return 'Barang';
+                    return '-';
                 }
-            }},
-            { "data": function(data) {
-                var date = moment(data.due_date).unix();
-                return (date > 0) ? moment(data.due_date).format("DD/MM/YYYY") : '-';
-                // return moment(data.due_date).format("DD/MM/YYYY");
-            }},
-            { "data": "inisiasi" },
+            } },
             { "data": function(data) {
                 if(data.task_duration.length > 0) {
                     var task = data.task_duration;
@@ -113,6 +117,26 @@ $(document).ready( function () {
                 }
             }},
             { "data": function(data) {
+                if(data.po_number) {
+                    return data.po_number;
+                } else {
+                    return '-';
+                }
+            } },
+            { "data": function(data) {
+                if(data.type == 'jasa') {
+                    return 'Jasa/ All In';
+                } else {
+                    return 'Barang';
+                }
+            }},
+            { "data": function(data) {
+                var date = moment(data.due_date).unix();
+                return (date > 0) ? moment(data.due_date).format("DD/MM/YYYY") : '-';
+                // return moment(data.due_date).format("DD/MM/YYYY");
+            }},
+            { "data": "inisiasi" },
+            { "data": function(data) {
                 var task = data.task_duration.filter(function (val) {
                     if(val.parentId == 0 && val.type == 'project') {
                         return val.progress;
@@ -128,24 +152,6 @@ $(document).ready( function () {
                     '<div class="progress-bar" role="progressbar" style="width: 100%;background-color: #f6f6f6;color:#000000;text-align:left;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div></div>';
                 }
             }},
-            { "data": function(data) {
-                var date = moment(data.end_date).unix();
-                return (date > 0) ? moment(data.end_date).format("DD/MM/YYYY") : '-';
-            } },
-            { "data": function(data) {
-                if(data.po_number) {
-                    return data.po_number;
-                } else {
-                    return '-';
-                }
-            } },
-            { "data": function(data) {
-                if(data.vendor) {
-                    return data.vendor;
-                } else {
-                    return '-';
-                }
-            } },
             { "data": function(data) {
                 return "<div class='dropdown d-inline-block dropleft'>"+
                 "<a href='#' class='btn btn-outline-success btn-icon waves-effect waves-themed btn-sm' data-toggle='dropdown' aria-expanded='true' title='More options'>"+
@@ -164,7 +170,7 @@ $(document).ready( function () {
         order: [[3, "desc"]],
         columnDefs: [
             { orderable: false, targets: [0, 1, 2, 3, 4, 5, 6, 7, 9, 11, 12, 13] },
-            { visible: false, targets: [3, 4] }
+            { visible: false, targets: [2, 3, 5, 7, 11, 12, 13] }
             // { targets: 5, render: function(id, row, meta) {
             //     $.get("/workspace/timestatus?id="+id, function(result, status){
             //         if(result == 1) {
