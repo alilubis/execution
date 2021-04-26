@@ -207,17 +207,23 @@ namespace SmartAdmin.WebUI.Controllers
 
         // [Authorize]
         [HttpPost]
-        public JsonResult AddTermin(
-            int id, string title, string billing_date, 
-            string sa_number, string value, int percentage
-        ) {
+        public JsonResult AddTermin(int id) {
+            // var termin = new ProjectTermin() {
+            //     project_id = id,
+            //     title = title,
+            //     billing_date = DateTime.Parse(billing_date),
+            //     sa_number = sa_number,
+            //     value = Convert.ToInt32(value),
+            //     percentage = percentage
+            // };
+            var total = _db.Termin.Where(t => t.project_id == id).Count();
             var termin = new ProjectTermin() {
                 project_id = id,
-                title = title,
-                billing_date = DateTime.Parse(billing_date),
-                sa_number = sa_number,
-                value = Convert.ToInt32(value),
-                percentage = percentage
+                title = "Termin "+(total+1),
+                billing_date = DateTime.Now,
+                sa_number = null,
+                value = 0,
+                percentage = 0
             };
             _db.Termin.Add(termin);
             _db.SaveChanges();
@@ -230,6 +236,37 @@ namespace SmartAdmin.WebUI.Controllers
                 percentage = Percentage
             });
         }
+
+        [Authorize]
+        [HttpPost]
+        public JsonResult UpdateTermin() {
+            var Data = _db.Termin.FirstOrDefault(d => d.id == int.Parse(Request.Form["pk"][0]));
+            if(Request.Form["name"] == "termin_title") {
+                Data.title = Request.Form["value"];
+            }
+            if(Request.Form["name"] == "tanggal_penagihan") {
+                Data.billing_date = DateTime.Parse(Request.Form["value"]);
+            }
+            if(Request.Form["name"] == "sa_number") {
+                Data.sa_number = Request.Form["value"];
+            }
+            if(Request.Form["name"] == "value") {
+                Data.value = Int64.Parse(Request.Form["value"]);
+            }
+            if(Request.Form["name"] == "percentage") {
+                Data.percentage = int.Parse(Request.Form["value"]);
+            }
+            _db.SaveChanges();
+            
+            var Value = _db.Termin.Where(t => t.project_id == Data.project_id).Sum(t => t.value);
+            var Percentage = _db.Termin.Where(t => t.project_id == Data.project_id).Sum(t => t.percentage);
+            return Json( new {
+                success = true,
+                data = Value,
+                percentage = Percentage
+            });
+        }
+
 
         [HttpPost]
         public JsonResult JumlahTermin(

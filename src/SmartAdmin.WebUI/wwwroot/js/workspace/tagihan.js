@@ -1,9 +1,10 @@
 var tableTagihan;
+var qparams = window.location.search;
+var params = qparams.split('?id=')[1];
+var id = (params == undefined || params == "" ? undefined : JSON.parse(unescape(params)));
+
 $(document).ready( function () {
     
-    var qparams = window.location.search;
-    var params = qparams.split('?id=')[1];
-    var id = (params == undefined || params == "" ? undefined : JSON.parse(unescape(params)));
 
     tableTagihan = $('#dt-basic-tagihan').DataTable({
         "lengthChange": false,
@@ -19,6 +20,41 @@ $(document).ready( function () {
             "url" : "/workspace/gettagihan?id="+id,
             "type" : "GET",
             "datatype" : "json"
+        },
+        createdRow: function(row, data, rowIndex) {
+            $.each($('td', row), function(colIndex) {
+                if(colIndex == 1) {
+                    $(this).attr('data-name', 'termin_title');
+                    $(this).attr('class', 'termin_title');
+                    $(this).attr('data-type', 'text');
+                    $(this).attr('data-pk', data.id);
+                }
+                if(colIndex == 2) {
+                    $(this).attr('data-name', 'tanggal_penagihan');
+                    $(this).attr('class', 'tanggal_penagihan');
+                    $(this).attr('data-type', 'date');
+                    $(this).attr('data-viewformat', 'dd/mm/yyyy');
+                    $(this).attr('data-pk', data.id);
+                }
+                if(colIndex == 3) {
+                    $(this).attr('data-name', 'sa_number');
+                    $(this).attr('class', 'sa_number');
+                    $(this).attr('data-type', 'number');
+                    $(this).attr('data-pk', data.id);
+                }
+                if(colIndex == 4) {
+                    $(this).attr('data-name', 'value');
+                    $(this).attr('class', 'value');
+                    $(this).attr('data-type', 'number');
+                    $(this).attr('data-pk', data.id);
+                }
+                if(colIndex == 5) {
+                    $(this).attr('data-name', 'percentage');
+                    $(this).attr('class', 'percentage');
+                    $(this).attr('data-type', 'number');
+                    $(this).attr('data-pk', data.id);
+                }
+            })
         },
         "columns" : [
             { data: function(data) {
@@ -51,96 +87,188 @@ $(document).ready( function () {
             //     return meta.settings._iDisplayStart + meta.row + 1;
             // }}
         ],
-        // initComplete: function() {
-        //     let data = tableTagihan.rows().data();
-        //     let total = 0;
-        //     for(i = 0; i < data.length; i++) {
-        //         total += data[i].value;
-        //     }
-        //     console.log(currencyFormat(total))
-        //     $('.nilai-tagihan').html(total);
-        // }
     }); 
 });
 
 
-$(".btn-submit-termin").on("click",function(e){
-    e.preventDefault();
-    var project_id = $("[name=project_id]").val();
-    var title = $("[name=title]").val();
-    var billing_date = $("[name=billing_date]").val();
-    var sa_number = $("[name=sa_number]").val();
-    var value = $("[name=value]").val();
-    var percentage = $("[name=percentage]").val();
-    let error = false
+// $(".btn-submit-termin").on("click",function(e){
+//     e.preventDefault();
+//     var project_id = $("[name=project_id]").val();
+//     var title = $("[name=title]").val();
+//     var billing_date = $("[name=billing_date]").val();
+//     var sa_number = $("[name=sa_number]").val();
+//     var value = $("[name=value]").val();
+//     var percentage = $("[name=percentage]").val();
+//     let error = false
 
-    if(_.isEmpty(title) || _.isUndefined(title)){
-        error = true;
-        $(".error-title").html("Termin harus diisi !")
-    }
-    if(_.isEmpty(billing_date) || _.isUndefined(billing_date)){
-        error = true;
-        $(".error-billing").html("Tanggal harus diisi..!")
-    }
-    if(_.isEmpty(sa_number) || _.isUndefined(sa_number)){
-        error = true;
-        $(".error-number").html("Nomor SA harus diisi..!")
-    }
-    if(_.isEmpty(value) || _.isUndefined(value)){
-        error = true;
-        $(".error-value").html("Nilai harus diisi..!")
-    }
-    if(_.isEmpty(percentage) || _.isUndefined(percentage)){
-        error = true;
-        $(".error-percentage").html("Persentase harus diisi..!")
-    }
+//     if(_.isEmpty(title) || _.isUndefined(title)){
+//         error = true;
+//         $(".error-title").html("Termin harus diisi !")
+//     }
+//     if(_.isEmpty(billing_date) || _.isUndefined(billing_date)){
+//         error = true;
+//         $(".error-billing").html("Tanggal harus diisi..!")
+//     }
+//     if(_.isEmpty(sa_number) || _.isUndefined(sa_number)){
+//         error = true;
+//         $(".error-number").html("Nomor SA harus diisi..!")
+//     }
+//     if(_.isEmpty(value) || _.isUndefined(value)){
+//         error = true;
+//         $(".error-value").html("Nilai harus diisi..!")
+//     }
+//     if(_.isEmpty(percentage) || _.isUndefined(percentage)){
+//         error = true;
+//         $(".error-percentage").html("Persentase harus diisi..!")
+//     }
     
-    if(!error){
-        var parameter = {
-            id : project_id,
-            title : title,
-            billing_date : billing_date,
-            sa_number : sa_number,
-            value : value,
-            percentage : percentage
-        }
-        $(".btn-submit-termin").attr("disabled",true);
-        $(".btn-submit-termin").text("");
-        $(".btn-submit-termin").append('<i class="fal fa-sync-alt fa-spinfal fa-spinner"></i> Loading to save...');
-        // $(".btn-submit-termin").append('<i class="fal fa-spinner"></i> Loading to save...');
-        $.ajax({
-            type : "POST",
-            url : "/workspace/addtermin",
-            dataType : "JSON",
-            data : parameter,
-            success : function(response){
-                $(".btn-submit-termin").attr("disabled",false);
-                if(response.success){
-                    $("#terminform")[0].reset();
-                    tableTagihan.ajax.reload();
-                    toastr.success(response.message);
-                    $('#termin-modal').modal('toggle');
-                    $('.nilai-tagihan').html(currencyFormat(response.data));
-                    $('.js-easy-pie-chart').data('easyPieChart').update(response.percentage);
-                    $('.js-percent').html(response.percentage);
-                    console.log(response.percentage);
-                    $(".error-title").html("");
-                    $(".error-billing").html("");
-                    $(".error-number").html("");
-                    $(".error-value").html("");
-                    $(".error-percentage").html("");
+//     if(!error){
+//         var parameter = {
+//             id : project_id,
+//             title : title,
+//             billing_date : billing_date,
+//             sa_number : sa_number,
+//             value : value,
+//             percentage : percentage
+//         }
+//         $(".btn-submit-termin").attr("disabled",true);
+//         $(".btn-submit-termin").text("");
+//         $(".btn-submit-termin").append('<i class="fal fa-sync-alt fa-spinfal fa-spinner"></i> Loading to save...');
+//         // $(".btn-submit-termin").append('<i class="fal fa-spinner"></i> Loading to save...');
+//         $.ajax({
+//             type : "POST",
+//             url : "/workspace/addtermin",
+//             dataType : "JSON",
+//             data : parameter,
+//             success : function(response){
+//                 $(".btn-submit-termin").attr("disabled",false);
+//                 if(response.success){
+//                     $("#terminform")[0].reset();
+//                     tableTagihan.ajax.reload();
+//                     toastr.success(response.message);
+//                     $('#termin-modal').modal('toggle');
+//                     $('.nilai-tagihan').html(currencyFormat(response.data));
+//                     $('.js-easy-pie-chart').data('easyPieChart').update(response.percentage);
+//                     $('.js-percent').html(response.percentage);
+//                     console.log(response.percentage);
+//                     $(".error-title").html("");
+//                     $(".error-billing").html("");
+//                     $(".error-number").html("");
+//                     $(".error-value").html("");
+//                     $(".error-percentage").html("");
 
-                }else{
-                    toastr.error(response.message);
-                }
-                $(".btn-submit-termin").html('Submit');
-            }, error : function(err){
-                $(".btn-submit-termin").attr("disabled",false);
-                toastr.error("Internal Server Error !")
-            }
-        })
+//                 }else{
+//                     toastr.error(response.message);
+//                 }
+//                 $(".btn-submit-termin").html('Submit');
+//             }, error : function(err){
+//                 $(".btn-submit-termin").attr("disabled",false);
+//                 toastr.error("Internal Server Error !")
+//             }
+//         })
+//     }
+// });
+
+$('#dt-basic-tagihan').editable({
+    url:'/workspace/updatetermin',
+    container:'body',
+    selector:'td.termin_title',
+    type:'POST',
+    validate:function(value){
+        if($.trim(value) == '')
+        {
+            return 'This field is required';
+        }
     }
 });
+$('#dt-basic-tagihan').editable({
+    url:'/workspace/updatetermin',
+    container:'body',
+    selector:'td.tanggal_penagihan',
+    type:'POST',
+    validate:function(value){
+        if($.trim(value) == '')
+        {
+            return 'This field is required';
+        }
+    }
+});
+$('#dt-basic-tagihan').editable({
+    url:'/workspace/updatetermin',
+    container:'body',
+    selector:'td.sa_number',
+    type:'POST',
+    validate:function(value){
+        if($.trim(value) == '')
+        {
+            return 'This field is required';
+        }
+    }
+});
+$('#dt-basic-tagihan').editable({
+    url:'/workspace/updatetermin',
+    container:'body',
+    selector:'td.value',
+    type:'POST',
+    validate:function(value){
+        if($.trim(value) == '')
+        {
+            return 'This field is required';
+        }
+    },
+    success: function(response, newValue) {
+        $('.nilai-tagihan').html(currencyFormat(response.data));
+        $('.js-easy-pie-chart').data('easyPieChart').update(response.percentage);
+        $('.js-percent').html(response.percentage);
+        tableTagihan.ajax.reload();
+    }
+});
+$('#dt-basic-tagihan').editable({
+    url:'/workspace/updatetermin',
+    container:'body',
+    selector:'td.percentage',
+    type:'POST',
+    validate:function(value){
+        if($.trim(value) == '')
+        {
+            return 'This field is required';
+        }
+    },
+    success: function(response, newValue) {
+        $('.nilai-tagihan').html(currencyFormat(response.data));
+        $('.js-easy-pie-chart').data('easyPieChart').update(response.percentage);
+        $('.js-percent').html(response.percentage);
+        tableTagihan.ajax.reload();
+    }
+});
+
+$('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+    $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+} );
+function addtermin() {
+    var parameter = {
+        id : id
+    }
+    $.ajax({
+        type : "POST",
+        url : "/workspace/addtermin",
+        dataType : "JSON",
+        data : parameter,
+        success : function(response){
+            if(response.success){
+                tableTagihan.ajax.reload();
+                toastr.success(response.message);
+                $('.nilai-tagihan').html(currencyFormat(response.data));
+                $('.js-easy-pie-chart').data('easyPieChart').update(response.percentage);
+                $('.js-percent').html(response.percentage);
+            }else{
+                toastr.error(response.message);
+            }
+        }, error : function(err){
+            toastr.error("Internal Server Error !")
+        }
+    })
+}
 
 
 $(".btn-submit-jumlah-termin").on("click",function(e){

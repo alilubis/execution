@@ -128,9 +128,9 @@ $(document).ready( function () {
                 '</label>'+
                 '<label class="btn btn-info waves-effect waves-themed">'+
                     '<input type="radio" name="options" class="button-tabel-gantt" id="option2" value="gantt"><i class="fal fa-chart-area"></i> Gantt'+
-                '</label></div>').appendTo('.justify-content-end');
+                '</label></div>').appendTo('#dt-basic-example_wrapper .justify-content-end');
             
-            $('<div class="dt-buttons mr-1"><div class="btn-group"><button class="btn buttons-collection dropdown-toggle buttons-colvis btn-outline-default" tabindex="0" type="button" title="Expand/ Collapse" aria-haspopup="true" aria-expanded="false"><span>Expand/Collapse</span></button></div></div>').prependTo('.justify-content-end');
+            $('<div class="dt-buttons mr-1"><div class="btn-group"><button class="btn buttons-collection dropdown-toggle buttons-colvis btn-outline-default" tabindex="0" type="button" title="Expand/ Collapse" aria-haspopup="true" aria-expanded="false"><span>Expand/Collapse</span></button></div></div>').prependTo('#dt-basic-example_wrapper .justify-content-end');
             // $('<button type="button" class="btn btn-primary waves-effect waves-themed float-right ml-1" data-toggle="modal" data-target="#modal-filter"><i class="fal fa-filter"></i> Filter</button>').appendTo('.justify-content-end');
         }
     }); 
