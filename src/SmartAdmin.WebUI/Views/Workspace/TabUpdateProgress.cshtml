@@ -1,0 +1,54 @@
+<div class="alert alert-primary" role="alert">
+    <div class="row">
+        <div class="col-lg-10 text-center">
+            <div class="row">
+                <div class="col-lg-3">
+                    Tanggal Day One Aktual
+                </div>
+                <div class="col-lg-3">
+                    Update terakhir
+                </div>
+                <div class="col-lg-2">
+                    Tipe Inisiasi
+                </div>
+                <div class="col-lg-2">
+                    Disiplin
+                </div>
+                <div class="col-lg-2">
+                    Jenis Kontrak
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">
+                    <h6 class="fw-900">
+                        <span id='datedayone'>
+                        @(ViewBag.Tasks != null ? string.Format("{0:dd/MM/yyyy}", ViewBag.Tasks) : "-")
+                        </span>
+                        <button class="btn btn-outline-secondary btn-xs btn-icon" data-toggle="modal" data-target="#default-example-modal">
+                            <i class="fal fa-pencil"></i>
+                        </button>
+                    </h6>
+                </div>
+                <div class="col-lg-3">
+                    <h6 class="fw-900">-</h6>
+                </div>
+                <div class="col-lg-2">
+                    <h6 class="fw-900">@ViewBag.Inisiasi.name</h6>
+                </div>
+                <div class="col-lg-2">
+                    <h6 class="fw-900">@ViewBag.Discipline.description</h6>
+                </div>
+                <div class="col-lg-2">
+                    <h6 class="fw-900">@(ViewBag.Project.contract_type == "unit_price" ? "Unit Price" : "Lumpsum")</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 mt-2">
+            <div class="text-center">
+                <button class="btn btn-dark btn-xs"><i class="fal fa-info-circle"></i> Informasi Project</button>
+            </div>
+        </div>
+    </div>
+</div>
+<partial name="PartialTable" />
+<partial name="PartialGantt" />

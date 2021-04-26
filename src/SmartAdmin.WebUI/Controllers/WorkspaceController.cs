@@ -6,6 +6,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
 
 namespace SmartAdmin.WebUI.Controllers
 {
@@ -127,6 +128,8 @@ namespace SmartAdmin.WebUI.Controllers
             ViewBag.Project = Project;
             ViewBag.Inisiasi = _db.SubInitiations.FirstOrDefault(i => i.id == Project.sub_inisiasi_id);
             ViewBag.Discipline = _db.Disciplines.FirstOrDefault(i => i.id == User.discipline_id);
+            ViewBag.Termin = _db.Termin.Where(t => t.project_id == Id).Sum(t => t.value);
+            ViewBag.Percentage = _db.Termin.Where(t => t.project_id == Id).Sum(t => t.percentage);
             var StartDate = _db.Tasks
                             .Where(t => t.ParentId != 0)
                             .Where(t => t.Project_id == Id)
@@ -160,6 +163,23 @@ namespace SmartAdmin.WebUI.Controllers
         }
 
         [Authorize]
+        public JsonResult GetTagihan(int id){
+            var Data = _db.Termin.Where(t => t.project_id == id)
+                    .Select(t => new {
+                        t.id,
+                        t.title,
+                        t.sa_number, 
+                        t.value, 
+                        t.percentage, 
+                        t.billing_date
+                    }).ToList();
+            return Json( new {
+                success = true,
+                data = Data
+            });
+        }
+
+        [Authorize]
         [HttpPost]
         public JsonResult UpdateTask() {
             var Data = _db.Tasks.FirstOrDefault(d => d.Id == int.Parse(Request.Form["pk"][0]));
@@ -183,6 +203,69 @@ namespace SmartAdmin.WebUI.Controllers
                 success = true,
                 data = Data
             });
+        }
+
+        // [Authorize]
+        [HttpPost]
+        public JsonResult AddTermin(
+            int id, string title, string billing_date, 
+            string sa_number, string value, int percentage
+        ) {
+            var termin = new ProjectTermin() {
+                project_id = id,
+                title = title,
+                billing_date = DateTime.Parse(billing_date),
+                sa_number = sa_number,
+                value = Convert.ToInt32(value),
+                percentage = percentage
+            };
+            _db.Termin.Add(termin);
+            _db.SaveChanges();
+            var Data = _db.Termin.Where(t => t.project_id == id).Sum(t => t.value);
+            var Percentage = _db.Termin.Where(t => t.project_id == id).Sum(t => t.percentage);
+            return Json( new {
+                success = true,
+                message = "Berhasil menambahkan termin",
+                data = Data,
+                percentage = Percentage
+            });
+        }
+
+        [HttpPost]
+        public JsonResult JumlahTermin(
+            int id, int jumlah
+        ) {
+            var Pro = _db.Project.FirstOrDefault(p => p.id == id);
+            Pro.termin = jumlah;
+            _db.SaveChanges();
+            return Json( new {
+                success = true,
+                message = "Berhasil memperbarui jumlah termin"
+            });
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult> DeleteTermin(int id, int project){
+            var termin = _db.Termin.First(e => e.id == id);
+            if(termin == null){
+                return Json( new {
+                    success = false,
+                    message = "Error Deleted Termin !"
+                });
+            }
+
+            // termin.deleted_at = DateTime.Now;
+            _db.Remove(termin);
+            await _db.SaveChangesAsync();
+            var Data = _db.Termin.Where(t => t.project_id == project).Sum(t => t.value);
+            var Percentage = _db.Termin.Where(t => t.project_id == project).Sum(t => t.percentage);
+            return Json( new {
+                success = true,
+                message = "Success Deleted Termin !",
+                data = Data,
+                percentage = Percentage
+            });
+            
         }
 
         [Authorize]

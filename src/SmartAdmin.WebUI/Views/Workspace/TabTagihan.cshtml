@@ -1,0 +1,90 @@
+@* <div class="partial-table d-block">
+    ini tagihan
+</div> *@
+@using System.Globalization;
+@{
+    NumberFormatInfo myNumberFormatInfo = new CultureInfo("id-ID", false).NumberFormat;
+}
+<div class="alert alert-primary" role="alert">
+<div class="row">
+    <div class="col-lg-3">
+        <span class="icon-stack display-4 mr-3 flex-shrink-0">
+            <a href="javascript:void(0);" class="btn btn-primary btn-lg btn-icon waves-effect waves-themed">
+                <i class="fal fa-file-alt"></i>
+            </a>
+        </span>
+        <div class="d-inline-flex flex-column">
+            <a href="javascript:void(0)" class="fs-lg fw-300 d-block text-muted">JUMLAH TERMIN</a>
+            <h5 class="d-block fw-700"><span class="jumlah-termin">@ViewBag.Project.termin</span> Kali 
+                <button class="btn btn-outline-secondary btn-xs btn-icon" data-toggle="modal" data-target="#jumlah-termin-modal">
+                    <i class="fal fa-pencil"></i>
+                </button>
+            </h5>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <span class="icon-stack display-4 mr-3 flex-shrink-0">
+            <a href="javascript:void(0);" class="btn btn-success btn-lg btn-icon waves-effect waves-themed">
+                <i class="fal fa-database"></i>
+            </a>
+        </span>
+        <div class="d-inline-flex flex-column">
+            <a href="javascript:void(0)" class="fs-lg fw-300 d-block text-muted">NILAI KONTRAK</a>
+            <h5 class="d-block fw-700">
+                @{
+                long cost = ViewBag.Project.purchase_order_cost;
+                var contract = cost.ToString("C",myNumberFormatInfo);
+                }
+                @contract
+            </h5>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        @* <span class="icon-stack display-4 mr-3 flex-shrink-0">
+            <a href="javascript:void(0);" class="btn btn-primary btn-lg btn-icon waves-effect waves-themed">
+                <i class="fal fa-database"></i>
+            </a>
+        </span> *@
+        <span class="icon-stack display-4 mr-3 flex-shrink-0">
+            <div class="px-3 py-2 d-flex align-items-center">
+                <div class="js-easy-pie-chart color-success-500 position-relative d-inline-flex align-items-center justify-content-center" data-percent="@ViewBag.Percentage" data-piesize="50" data-linewidth="5" data-linecap="butt">
+                    <div class="d-flex flex-column align-items-center justify-content-center position-absolute pos-left pos-right pos-top pos-bottom fw-300 fs-lg">
+                        <span class="js-percent d-block text-dark"></span>
+                    </div>
+                </div>
+            </div>
+        </span>
+        <div class="d-inline-flex flex-column ml-3">           
+            <a href="javascript:void(0)" class="fs-lg fw-300 d-block text-muted">NILAI YANG SUDAH DITAGIHKAN</a>
+            <h5 class="d-block fw-700 nilai-tagihan text-success">
+                @{
+                long termin = ViewBag.Termin;
+                var value = termin.ToString("C",myNumberFormatInfo);
+                }
+                @value
+            </h5>
+        </div>
+    </div>
+    <div class="col-lg-2">
+        <button class="btn btn-outline-primary waves-effect waves-themed" data-toggle="modal" data-target="#termin-modal">Tambah Termin</button>
+    </div>
+</div>
+</div>
+<div class="partial-table d-block">
+    <table id="dt-basic-tagihan" class="table table-bordered table-hover table-striped w-100">
+        <thead class="thead-dark">
+            <tr>
+                <th>Status Dokumen</th>
+                <th>Termin Ke</th>
+                <th>Tanggal Penagihan</th>
+                <th>Nomor SA</th>
+                <th>Nilai</th>
+                <th>Persentase Tagihan</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+<partial name="PartialTerminModal" />

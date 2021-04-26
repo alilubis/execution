@@ -115,15 +115,21 @@ $(document).ready( function () {
             className: 'btn-outline-default'
         }],
         initComplete: function() {
+            // $('<a href="javascript:void(0);" class="btn btn-outline-primary btn-icon ml-1"><i class="fal fa-question-circle"></i></a>'+
+            // '<div class="btn-group ml-1">'+
+            // '<button type="button" class="btn btn-primary button-tabel-gantt" data-value="table"><i class="fal fa-table"></i> Tabel</button>'+
+            // '<button type="button" class="btn btn-primary button-tabel-gantt" data-value="gantt"><i class="fal fa-chart-area"></i> Gantt</button>'+
+            // '</div>').appendTo('.justify-content-end');
+
             $('<a href="javascript:void(0);" class="btn btn-outline-primary btn-icon ml-1"><i class="fal fa-question-circle"></i></a>'+
-            '<div class="btn-group ml-1">'+
-            '<button type="button" class="btn btn-primary button-tabel-gantt" data-value="table"><i class="fal fa-table"></i> Tabel</button>'+
-            '<button type="button" class="btn btn-primary button-tabel-gantt" data-value="gantt"><i class="fal fa-chart-area"></i> Gantt</button>'+
-            '</div>').appendTo('.justify-content-end');
-            // $('<select class="form-control" id="example-select">'+
-            // '<option>1</option>'+
-            // '<option>2</option>'+
-            // '</select>').prependTo('.justify-content-end');
+            '<div class="btn-group btn-group-toggle ml-1" data-toggle="buttons">'+
+                '<label class="btn btn-info waves-effect waves-themed">'+
+                    '<input type="radio" name="options" class="button-tabel-gantt" id="option1" value="table"><i class="fal fa-table"></i> Tabel'+
+                '</label>'+
+                '<label class="btn btn-info waves-effect waves-themed">'+
+                    '<input type="radio" name="options" class="button-tabel-gantt" id="option2" value="gantt"><i class="fal fa-chart-area"></i> Gantt'+
+                '</label></div>').appendTo('.justify-content-end');
+            
             $('<div class="dt-buttons mr-1"><div class="btn-group"><button class="btn buttons-collection dropdown-toggle buttons-colvis btn-outline-default" tabindex="0" type="button" title="Expand/ Collapse" aria-haspopup="true" aria-expanded="false"><span>Expand/Collapse</span></button></div></div>').prependTo('.justify-content-end');
             // $('<button type="button" class="btn btn-primary waves-effect waves-themed float-right ml-1" data-toggle="modal" data-target="#modal-filter"><i class="fal fa-filter"></i> Filter</button>').appendTo('.justify-content-end');
         }
@@ -243,17 +249,16 @@ $(document).ready( function () {
 	});
 
     $(document).on('click', '.button-tabel-gantt', function() {
-        // $(this).find('button').addClass('active');
-        // $(this).find('button').addClass('active');
-        // $(".button-tabel-gantt").each(function(index) {
-            if($(this).data('value') == 'table') {
-                $('*[data-value="table"]').addClass('active');
-                $('*[data-value="gantt"]').removeClass('active');
+        // console.log($("input[name='options']:checked").val());
+            if($("input[name='options']:checked").val() == 'table') {
+                // if($(this).data('value') == 'table') {
+                // $('*[data-value="table"]').addClass('active');
+                // $('*[data-value="gantt"]').removeClass('active');
                 $('.partial-table').addClass('d-block').removeClass('d-none');
                 $('.partial-gantt').addClass('d-none').removeClass('d-block');
             } else {
-                $('*[data-value="gantt"]').addClass('active');
-                $('*[data-value="table"]').removeClass('active');
+                // $('*[data-value="gantt"]').addClass('active');
+                // $('*[data-value="table"]').removeClass('active');
                 $('.partial-table').addClass('d-none').removeClass('d-block');
                 $('.partial-gantt').addClass('d-block').removeClass('d-none');
             }
