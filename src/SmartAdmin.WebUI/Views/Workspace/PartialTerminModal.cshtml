@@ -93,3 +93,165 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade document-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-right modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title h4 text-uppercase termin-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col">
+                        Dokumen yang harus dilengkapi untuk project dengan tipe kontrak @(ViewBag.Project.contract_type == "unit_price" ? "Unit Price" : "Lumpsum") adalah:
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col">
+                        <form id="formUpload">
+                            <div class="form-group">
+                                <label class="form-label">DOKUMEN PUNCHLIST</label>
+                                <div class="punchListInput">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="InputPunchList">
+                                        <label class="custom-file-label" for="InputPunchList">Choose file</label>
+                                    </div>
+                                    <small class="text-muted text-right error-message-punchlist">
+                                        <b>Catatan : </b> Tipe file yang dapat diupload adalah PDF, docx / doc, dan xlsx / xls
+                                    </small>
+                                </div>
+                                <div class="punchListFile d-none">
+                                    <div class="row">
+                                        <div class="col-lg-8"><small></small></div>
+                                        <div class="col-lg-4 text-right">
+                                            <a href="javascript:void(0);" class="btn btn-success btn-xs btn-icon rounded-circle view"><i class="fal fa-eye"></i></a>        
+                                            <a href="javascript:void(0);" class="btn btn-success btn-xs btn-icon rounded-circle download"><i class="fal fa-download"></i></a>        
+                                            <a href="javascript:void(0);" class="btn btn-danger btn-xs btn-icon rounded-circle delete"><i class="fal fa-trash-alt"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">BASTP 1</label>
+                                <div class="bastpOneInput">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="InputBastpOne">
+                                        <label class="custom-file-label" for="InputBastpOne">Choose file</label>
+                                    </div>
+                                    <small class="text-muted text-right error-message-bastpone">
+                                        <b>Catatan : </b> Tipe file yang dapat diupload adalah PDF, docx / doc, dan xlsx / xls
+                                    </small>
+                                </div>
+                                <div class="bastpOneFile d-none">
+                                    <div class="row">
+                                        <div class="col-lg-8"><small></small></div>
+                                        <div class="col-lg-4 text-right">
+                                            <a href="javascript:void(0);" class="btn btn-success btn-xs btn-icon rounded-circle view"><i class="fal fa-eye"></i></a>        
+                                            <a href="javascript:void(0);" class="btn btn-success btn-xs btn-icon rounded-circle download"><i class="fal fa-download"></i></a>        
+                                            <a href="javascript:void(0);" class="btn btn-danger btn-xs btn-icon rounded-circle delete"><i class="fal fa-trash-alt"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                @* <div class="custom-file bastpOne">
+                                    <input type="file" class="custom-file-input" id="InputBastpOne">
+                                    <label class="custom-file-label" for="InputBastpOne">Choose file</label>
+                                </div>
+                                <small class="text-muted text-right error-message-bastpone">
+                                    <b>Catatan : </b> Tipe file yang dapat diupload adalah PDF, docx / doc, dan xlsx / xls
+                                </small> *@
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">LAPORAN KEMAJUAN PEKERJAAN</label>
+                                <div class="jobReportInput">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="InputJobReport">
+                                        <label class="custom-file-label" for="InputJobReport">Choose file</label>
+                                    </div>
+                                    <small class="text-muted text-right error-message-report">
+                                        <b>Catatan : </b> Tipe file yang dapat diupload adalah PDF, docx / doc, dan xlsx / xls
+                                    </small>
+                                </div>
+                                <div class="jobReportFile d-none">
+                                    <div class="row">
+                                        <div class="col-lg-8"><small></small></div>
+                                        <div class="col-lg-4 text-right">
+                                            <a href="javascript:void(0);" class="btn btn-success btn-xs btn-icon rounded-circle view"><i class="fal fa-eye"></i></a>        
+                                            <a href="javascript:void(0);" class="btn btn-success btn-xs btn-icon rounded-circle download"><i class="fal fa-download"></i></a>        
+                                            <a href="javascript:void(0);" class="btn btn-danger btn-xs btn-icon rounded-circle delete"><i class="fal fa-trash-alt"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                @* <div class="custom-file progressJob">
+                                    <input type="file" class="custom-file-input" id="InputLaporan">
+                                    <label class="custom-file-label" for="InputLaporan">Choose file</label>
+                                </div>
+                                <small class="text-muted text-right error-message-report">
+                                    <b>Catatan : </b> Tipe file yang dapat diupload adalah PDF, docx / doc, dan xlsx / xls
+                                </small> *@
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">BASTP 2</label>
+                                <div class="bastpTwoInput">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="InputBastpTwo">
+                                        <label class="custom-file-label" for="InputBastpTwo">Choose file</label>
+                                    </div>
+                                    <small class="text-muted text-right error-message-bastptwo">
+                                        <b>Catatan : </b> Tipe file yang dapat diupload adalah PDF, docx / doc, dan xlsx / xls
+                                    </small>
+                                </div>
+                                <div class="bastpTwoFile d-none">
+                                    <div class="row">
+                                        <div class="col-lg-8"><small></small></div>
+                                        <div class="col-lg-4 text-right">
+                                            <a href="javascript:void(0);" class="btn btn-success btn-xs btn-icon rounded-circle view"><i class="fal fa-eye"></i></a>        
+                                            <a href="javascript:void(0);" class="btn btn-success btn-xs btn-icon rounded-circle download"><i class="fal fa-download"></i></a>        
+                                            <a href="javascript:void(0);" class="btn btn-danger btn-xs btn-icon rounded-circle delete"><i class="fal fa-trash-alt"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                @* <div class="custom-file bastpTwo">
+                                    <input type="file" class="custom-file-input" id="InputBastpTwo">
+                                    <label class="custom-file-label" for="InputBastpTwo">Choose file</label>
+                                </div>
+                                <small class="text-muted text-right error-message-bastptwo">
+                                    <b>Catatan : </b> Tipe file yang dapat diupload adalah PDF, docx / doc, dan xlsx / xls
+                                </small> *@
+                            </div>
+                            <div class="form-group mb-0">
+                                <label class="form-label">PERHITUNGAN TAGIHAN (Diupload oleh Planner)</label>
+                                <input type="text" class="form-control" value="File Kosong" disabled="">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-submit-document">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modal-preview" data-backdrop="static" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-left modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Pratinjau Berkas <span class="file-title" id="filename"></span>
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="@(Settings.Theme.IconPrefix) fa-times"></i></span>
+                </button>
+            </div>
+            <div class="modal-body" style="padding:0.25rem 1.25rem">
+                <div class="form-group row text-center" id="preview-files"></div>
+            </div>
+        </div>
+    </div>
+</div>

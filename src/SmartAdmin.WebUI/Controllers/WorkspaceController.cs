@@ -1,22 +1,31 @@
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Configuration;
 using SmartAdmin.WebUI.Models;
 using System;
 using System.Linq;
+using System.Data;
+using System.IO;
+using System.Drawing;  
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.StaticFiles;
+
 
 namespace SmartAdmin.WebUI.Controllers
 {
     public class WorkspaceController : Controller
     {
 
+        private IWebHostEnvironment Environment;
         private readonly ExecutionContext _db;
-        public WorkspaceController(ExecutionContext db)
+        public WorkspaceController(ExecutionContext db, IWebHostEnvironment _environment)
         {
             _db = db;
+            Environment = _environment;
         }
         [Authorize]
         public IActionResult Index() {
@@ -77,6 +86,7 @@ namespace SmartAdmin.WebUI.Controllers
             });
         }
 
+        [Authorize]
         public JsonResult UpdateDayOne(int id, string dates){
             var Task = _db.Tasks.Where(t => t.Project_id == id).ToList();
 
@@ -145,6 +155,307 @@ namespace SmartAdmin.WebUI.Controllers
         }
 
         [Authorize]
+        [HttpPost]
+        [ActionName("UploadFile")]
+        // public async Task<IActionResult> UploadFile(
+        //     IFormFile FileToUploadPunchList, IFormFile FileToUploadBastpOne, 
+        //     IFormFile FileToUploadBastpTwo, IFormFile FileToUploadLaporan, int ProjectId, int TerminId
+        //     ){
+        public async Task<IActionResult> UploadFile(FileInputModel model){    
+                var FileSupport = new[] { "xls", "xlsx", "pdf", "doc", "docx" };
+                var message = "";
+                var success = false;
+                if (model.FileToUploadPunchList != null) {
+                    var fileExtPL = model.FileToUploadPunchList.FileName != null ? System.IO.Path.GetExtension(model.FileToUploadPunchList.FileName).Substring(1) : null;
+                    
+                    if (!FileSupport.Contains(fileExtPL))
+                    {
+                        success = false;
+                        message = "Terjadi kesalahan saat mengunggah berkas, silahkan coba lagi..!";
+                        // return Json(new {
+                        //     success = false,
+                        //     message = "Terjadi kesalahan saat mengunggah berkas, silahkan coba lagi..!"
+                        // });
+                    } else {
+                        if(SaveFile(model)) {
+                            string path = Path.Combine(this.Environment.WebRootPath, "data");
+                            if (!Directory.Exists(path)) {
+                                Directory.CreateDirectory(path);
+                            }
+                            string fileNamePL = Path.GetFileName(model.FileToUploadPunchList.FileName);
+                            string filePathPL = Path.Combine(path, fileNamePL);
+                            await using (FileStream streamPL = new FileStream(filePathPL, FileMode.Create))
+                            {
+                                model.FileToUploadPunchList.CopyTo(streamPL);
+                            }
+                            // SaveFile(model);
+                            success = true;
+                            message = "Berhasil mengunggah berkas..!";
+                            // return Json(new {
+                            //     success = true,
+                            //     message = "Berhasil mengunggah berkas..!"
+                            // });
+                        } else {
+                            success = false;
+                            message = "Terjadi kesalahan saat mengunggah berkas, silahkan coba lagi..!";
+                            // return Json(new {
+                            //     success = false,
+                            //     message = "Terjadi kesalahan saat mengunggah berkas, silahkan coba lagi..!"
+                            // });
+                        }
+                    }
+                    
+                } 
+                if (model.FileToUploadBastpOne != null) {
+                    var fileExtBOne = System.IO.Path.GetExtension(model.FileToUploadBastpOne.FileName).Substring(1);
+                    if(!FileSupport.Contains(fileExtBOne)) {
+                    //     return Json(new {
+                    //        success = false,
+                    //        message = "Terjadi kesalahan saat mengunggah berkas, silahkan coba lagi..!"
+                    //    });
+                        success = false;
+                        message = "Terjadi kesalahan saat mengunggah berkas, silahkan coba lagi..!";
+                    } else {
+                        if(SaveFile(model)) {
+                            string path = Path.Combine(this.Environment.WebRootPath, "data");
+                            if (!Directory.Exists(path)) {
+                                Directory.CreateDirectory(path);
+                            }
+                            string fileNameBone = Path.GetFileName(model.FileToUploadBastpOne.FileName);
+                            string filePathBone = Path.Combine(path, fileNameBone);
+                            await using (FileStream streamOne = new FileStream(filePathBone, FileMode.Create))
+                            {
+                                model.FileToUploadBastpOne.CopyTo(streamOne);
+                            }
+                            // return Json(new {
+                            //     success = true,
+                            //     message = "Berhasil mengunggah berkas..!"
+                            // });
+                            success = true;
+                            message = "Berhasil mengunggah berkas..!";
+                        } else {
+                            // return Json(new {
+                            //     success = false,
+                            //     message = "Terjadi kesalahan saat mengunggah berkas, silahkan coba lagi..!"
+                            // });
+                            success = false;
+                            message = "Terjadi kesalahan saat mengunggah berkas, silahkan coba lagi..!";
+                        }
+                    }
+                } 
+
+                if (model.FileToUploadBastpTwo != null) {
+                    var fileExtBTwo = System.IO.Path.GetExtension(model.FileToUploadBastpTwo.FileName).Substring(1);
+                    if(!FileSupport.Contains(fileExtBTwo)) {
+                    //     return Json(new {
+                    //        success = false,
+                    //        message = "Terjadi kesalahan saat mengunggah berkas, silahkan coba lagi..!"
+                    //    });
+                        success = false;
+                        message = "Terjadi kesalahan saat mengunggah berkas, silahkan coba lagi..!";
+                    } else {
+                        if(SaveFile(model)) {
+                            string path = Path.Combine(this.Environment.WebRootPath, "data");
+                            if (!Directory.Exists(path)) {
+                                Directory.CreateDirectory(path);
+                            }
+                            string fileNameBTwo = Path.GetFileName(model.FileToUploadBastpTwo.FileName);
+                            string filePathBTwo = Path.Combine(path, fileNameBTwo);
+                            await using (FileStream stream = new FileStream(filePathBTwo, FileMode.Create))
+                            {
+                                model.FileToUploadBastpTwo.CopyTo(stream);
+                            }
+                            // return Json(new {
+                            //     success = true,
+                            //     message = "Berhasil mengunggah berkas..!"
+                            // });
+                            success = true;
+                            message = "Berhasil mengunggah berkas..!";
+                        } else {
+                            // return Json(new {
+                            //     success = false,
+                            //     message = "Terjadi kesalahan saat mengunggah berkas, silahkan coba lagi..!"
+                            // });
+                            success = false;
+                            message = "Terjadi kesalahan saat mengunggah berkas, silahkan coba lagi..!";
+                        }
+                    }
+                }
+
+                if (model.FileToUploadLaporan != null) {
+                    var fileExtReport = System.IO.Path.GetExtension(model.FileToUploadLaporan.FileName).Substring(1);
+                    if(!FileSupport.Contains(fileExtReport)) {
+                    //     return Json(new {
+                    //        success = false,
+                    //        message = "Terjadi kesalahan saat mengunggah berkas, silahkan coba lagi..!"
+                    //    });
+                        success = false;
+                        message = "Terjadi kesalahan saat mengunggah berkas, silahkan coba lagi..!";
+                    } else {
+                        if(SaveFile(model)) {
+                            string path = Path.Combine(this.Environment.WebRootPath, "data");
+                            if (!Directory.Exists(path)) {
+                                Directory.CreateDirectory(path);
+                            }
+
+                            string fileNameReport = Path.GetFileName(model.FileToUploadLaporan.FileName);
+                            string filePathReport = Path.Combine(path, fileNameReport);
+                            await using (FileStream stream = new FileStream(filePathReport, FileMode.Create))
+                            {
+                                model.FileToUploadLaporan.CopyTo(stream);
+                            }
+                            // return Json(new {
+                            //     success = true,
+                            //     message = "Berhasil mengunggah berkas..!"
+                            // });
+                            success = true;
+                            message = "Berhasil mengunggah berkas..!";
+                        } else {
+                            // return Json(new {
+                            //     success = false,
+                            //     message = "Terjadi kesalahan saat mengunggah berkas, silahkan coba lagi..!"
+                            // });
+                            success = false;
+                            message = "Terjadi kesalahan saat mengunggah berkas, silahkan coba lagi..!";
+                        }
+                    }
+                }
+
+                // else {
+                    return Json(new {
+                           success = success,
+                           message = message
+                       });
+                // }
+        }
+        // protected void Page_Load(object sender, EventArgs e) {    
+        //     var webRoot = Environment.WebRootPath;
+        //     var file = System.IO.Path.Combine(webRoot, "test.txt");
+        //     System.IO.File.WriteAllText(file, "Hello World!");
+        // } 
+        [Authorize]
+        [HttpPost]
+        [ActionName("DeleteFile")]
+
+        public JsonResult DeleteFile(int terminId, string columnName, string fileName) {
+            var termin = _db.TerminDocument.FirstOrDefault(t => t.termin_id == terminId);
+            if(termin != null) {
+                if(columnName == "punchlist") {
+                    termin.punchlist = null;
+                } else if (columnName == "bastpone") {
+                    termin.bastp_one = null;
+                } else if (columnName == "jobreport") {
+                    termin.job_progress_report = null;
+                } else if (columnName == "bastptwo") {
+                    termin.bastp_two = null;
+                }
+                _db.SaveChanges();
+
+                // string path = Server.MapPath("data/" + fileName);  
+                
+                var webRoot = Environment.WebRootPath;
+                string path = System.IO.Path.Combine(webRoot, "data/" + fileName);
+
+                FileInfo file = new FileInfo(path);  
+                if (file.Exists) {  
+                    file.Delete(); 
+                    return Json(new {
+                        success = true,
+                        message = "Berhasil menghapus file "+fileName
+                    }); 
+                } else {  
+                    return Json(new {
+                        success = false,
+                        message = "File "+fileName+ " tidak tersedia"
+                    }); 
+                }  
+            } else {
+                return Json(new {
+                    success = false,
+                    message = "Data pada termin ini tidak tersedia"
+                });
+            }
+
+        }
+        public async Task<IActionResult> ViewFile(string filename) 
+        {
+            var filePath = Path.Combine(this.Environment.WebRootPath, "data/"+filename);
+            // byte[] bytes = File.ReadAllBytes(filePath + filename);
+
+            var memory = new MemoryStream();
+            using (var stream = new FileStream(filePath, FileMode.Open))
+            {
+                await stream.CopyToAsync(memory);
+            }
+            memory.Position = 0;
+            // return File(memory, "application/pdf");
+           
+            // Response.Headers.Add("Content-Disposition", "inline; filename=" + filename);
+            if (filename.EndsWith(".pdf")) {
+                return File(memory, "application/pdf");
+            } else if (filename.EndsWith(".doc")) {
+                return File(memory, "application/msword");
+            } else if (filename.EndsWith(".docx")) {
+                return File(memory, "application/msword");
+            } else if (filename.EndsWith(".xls")) {
+                return File(memory, "application/vnd.ms-excel");
+            } else if (filename.EndsWith(".xlsx")) {
+                return File(memory, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            } else {
+                return Json(new {
+                    success = false,
+                    message = "Berkas ini tidak support untuk ditinjau, silahkan download berkas..!"
+                });
+            }
+        }
+
+        private bool SaveFile(FileInputModel model)
+        {
+           var terminCount = _db.TerminDocument.Count(t => t.termin_id == model.TerminId);
+            if (terminCount == 0) {
+                var terminData = new TerminDocument() {
+                    termin_id = model.TerminId,
+                    punchlist = (model.FileToUploadPunchList != null) ? model.FileToUploadPunchList.FileName : null,
+                    bastp_one = (model.FileToUploadBastpOne != null) ? model.FileToUploadBastpOne.FileName : null,
+                    bastp_two = (model.FileToUploadBastpTwo != null) ? model.FileToUploadBastpTwo.FileName : null,
+                    job_progress_report = (model.FileToUploadLaporan != null) ? model.FileToUploadLaporan.FileName : null,
+                    created_at = DateTime.Now,
+                    updated_at = DateTime.Now
+                };
+                
+                _db.TerminDocument.Add(terminData);
+                _db.SaveChanges();
+            } else {
+                var terminDoc = _db.TerminDocument.FirstOrDefault(t => t.termin_id == model.TerminId);
+                if (model.FileToUploadPunchList != null) {
+                    terminDoc.punchlist = model.FileToUploadPunchList.FileName;
+                }
+                if (model.FileToUploadBastpOne != null) {
+                    terminDoc.bastp_one = model.FileToUploadBastpOne.FileName;
+                }
+                if (model.FileToUploadBastpTwo != null) {
+                    terminDoc.bastp_two = model.FileToUploadBastpTwo.FileName;
+                }
+                if (model.FileToUploadLaporan != null) {
+                    terminDoc.job_progress_report = model.FileToUploadLaporan.FileName;
+                }
+                terminDoc.updated_at = DateTime.Now;
+                
+                _db.SaveChanges();
+            }
+            return true;
+        }
+
+        [Authorize]
+        public JsonResult GetTerminDocument(int id) {
+            var data = _db.TerminDocument.FirstOrDefault(t => t.termin_id == id);
+            return Json( new {
+                success = true,
+                data = data
+            });
+        }
+
+        [Authorize]
         public JsonResult GetTasks(int id){
             var Data = _db.Tasks.Where(t => t.Project_id == id)
                     .Select(t => new {
@@ -165,14 +476,32 @@ namespace SmartAdmin.WebUI.Controllers
         [Authorize]
         public JsonResult GetTagihan(int id){
             var Data = _db.Termin.Where(t => t.project_id == id)
-                    .Select(t => new {
-                        t.id,
-                        t.title,
-                        t.sa_number, 
-                        t.value, 
-                        t.percentage, 
-                        t.billing_date
-                    }).ToList();
+                    .Join(
+                        _db.TerminDocument,
+                        termin => termin.id,
+                        docs => docs.termin_id,
+                        (termin, docs) => new {
+                            id = termin.id,
+                            title = termin.title,
+                            sa_number = termin.sa_number, 
+                            value = termin.value, 
+                            percentage = termin.percentage, 
+                            billing_date = termin.billing_date,
+                            status_document = (
+                                docs.punchlist != null && docs.bastp_one != null 
+                                && docs.bastp_two != null && docs.job_progress_report != null ? 1 : 0
+                            )
+                        }
+                    )
+                    // .Select(t => new {
+                    //     t.id,
+                    //     t.title,
+                    //     t.sa_number, 
+                    //     t.value, 
+                    //     t.percentage, 
+                    //     t.billing_date
+                    // })
+                    .ToList();
             return Json( new {
                 success = true,
                 data = Data
@@ -188,15 +517,12 @@ namespace SmartAdmin.WebUI.Controllers
             }
             if(Request.Form["name"] == "plan_start") {
                 Data.planned_start = DateTime.Parse(Request.Form["value"]);
-                // Data.Duration = (Data.planned_end - DateTime.Parse(Request.Form["value"])).Days;
             }
             if(Request.Form["name"] == "plan_finish") {
                 Data.planned_end = DateTime.Parse(Request.Form["value"]);
-                // Data.Duration = (DateTime.Parse(Request.Form["value"]) - Data.planned_start).Days;
             }
             if(Request.Form["name"] == "startdate") {
                 Data.StartDate = DateTime.Parse(Request.Form["value"]);
-                // Data.Duration = (DateTime.Parse(Request.Form["value"]) - Data.planned_start).Days;
             }
             _db.SaveChanges();
             return Json( new {
@@ -205,7 +531,7 @@ namespace SmartAdmin.WebUI.Controllers
             });
         }
 
-        // [Authorize]
+        [Authorize]
         [HttpPost]
         public JsonResult AddTermin(int id) {
             // var termin = new ProjectTermin() {
@@ -227,6 +553,20 @@ namespace SmartAdmin.WebUI.Controllers
             };
             _db.Termin.Add(termin);
             _db.SaveChanges();
+
+            var docs = new TerminDocument() {
+                termin_id = termin.id,
+                punchlist = null,
+                bastp_one = null,
+                bastp_two = null,
+                job_progress_report = null,
+                created_at = DateTime.Now,
+                updated_at = DateTime.Now
+            };
+
+            _db.TerminDocument.Add(docs);
+            _db.SaveChanges();
+
             var Data = _db.Termin.Where(t => t.project_id == id).Sum(t => t.value);
             var Percentage = _db.Termin.Where(t => t.project_id == id).Sum(t => t.percentage);
             return Json( new {
@@ -268,6 +608,7 @@ namespace SmartAdmin.WebUI.Controllers
         }
 
 
+        [Authorize]
         [HttpPost]
         public JsonResult JumlahTermin(
             int id, int jumlah
@@ -281,9 +622,15 @@ namespace SmartAdmin.WebUI.Controllers
             });
         }
 
+        [Authorize]
         [HttpDelete]
         public async Task<ActionResult> DeleteTermin(int id, int project){
             var termin = _db.Termin.First(e => e.id == id);
+            var docs = _db.TerminDocument.FirstOrDefault(d => d.termin_id == id);
+            if(docs != null) {
+                _db.Remove(docs);
+                await _db.SaveChangesAsync();
+            }
             if(termin == null){
                 return Json( new {
                     success = false,

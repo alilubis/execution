@@ -17,6 +17,7 @@ namespace SmartAdmin.WebUI.Models
         public DbSet<Tasks> Tasks { get; set; }
         public DbSet<Disciplines> Disciplines { get; set; }
         public DbSet<ProjectTermin> Termin { get; set; }
+        public DbSet<TerminDocument> TerminDocument { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Users>().ToTable("users", "monitoring");
@@ -25,7 +26,7 @@ namespace SmartAdmin.WebUI.Models
             modelBuilder.Entity<SubInitiations>().ToTable("sub_initiations", "monitoring");
             modelBuilder.Entity<Disciplines>().ToTable("disciplines", "monitoring");
             modelBuilder.Entity<ProjectTermin>().ToTable("project_termin", "monitoring");
-            // modelBuilder.Entity<Uraian>().ToTable("Tasks");
+            modelBuilder.Entity<TerminDocument>().ToTable("termin_document", "monitoring");
         }
     }
 }

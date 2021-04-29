@@ -2,7 +2,7 @@ var tableTagihan;
 var qparams = window.location.search;
 var params = qparams.split('?id=')[1];
 var id = (params == undefined || params == "" ? undefined : JSON.parse(unescape(params)));
-
+var TerminID = 0;
 $(document).ready( function () {
     
 
@@ -58,7 +58,11 @@ $(document).ready( function () {
         },
         "columns" : [
             { data: function(data) {
-                return '<span class="badge badge-success">Complete</span>';
+                if(data.status_document == 1) {
+                    return '<span class="badge badge-success">Complete</span>';
+                } else {
+                    return '<span class="badge badge-warning text-white">In Progress</span>';
+                }
             }},
             { data: 'title', searchable: false, orderable: false },
             { data: function(data) {
@@ -72,7 +76,7 @@ $(document).ready( function () {
                 return data.percentage + ' %';
             }},
             { data: function(data) {
-                return '<a href="" class="btn btn-primary btn-xs waves-effect waves-themed"><i class="fal fa-file-alt"></i> Dokumen</a> '+
+                return '<a href="javascript:void(0)" class="btn btn-primary termin-document btn-xs waves-effect waves-themed" data-title="'+data.title+'" data-termin="'+data.id+'"><i class="fal fa-file-alt"></i> Dokumen</a> '+
                 '<a href="javascript:void(0)" onclick=deleted(\'/workspace/deletetermin?id='+data.id+'&project='+id+'\') class="btn btn-danger btn-xs waves-effect waves-themed"><i class="fal fa-trash"></i> Hapus</a>';
                 // '<a href="" class="btn btn-danger btn-xs waves-effect waves-themed"><i class="fal fa-trash"></i> Hapus</a>';
             }}
@@ -314,6 +318,427 @@ $(".btn-submit-jumlah-termin").on("click",function(e){
             }
         })
     }
+});
+
+$(document).on('click', '.termin-document', function () {
+    var title = $(this).data('title');
+    $('.termin-title').html(title);
+    TerminID = $(this).data('termin');
+    $.get('workspace/gettermindocument?id='+TerminID, function (obj) {
+        var punchList = (obj.data != null ? obj.data.punchlist : null);
+        var bastpOne = (obj.data != null ? obj.data.bastp_one : null);
+        var bastpTwo = (obj.data != null ? obj.data.bastp_two : null);
+        var jobReport = (obj.data != null ? obj.data.job_progress_report : null);
+console.log(obj);
+        if(punchList != null) {
+            $('.punchListInput').addClass('d-none').removeClass('d-block');
+            $('.punchListFile').addClass('d-block').removeClass('d-none');
+            $('.punchListFile small').html(punchList);
+            $('.punchListFile a.view').attr('onclick', 'FilePreview(\''+punchList+'\', \''+fileType(punchList)+'\', \'punchlist\')');
+            $('.punchListFile a.download').attr('onclick', 'FileDownload(\''+punchList+'\', \''+fileType(punchList)+'\', \'punchlist\', \''+title+'\')');
+            $('.punchListFile a.delete').attr('onclick', 'deleteFile('+TerminID+',\'punchlist\', \''+punchList+'\')');
+        } else {
+            $('.punchListInput').addClass('d-block').removeClass('d-none');
+            $('.punchListFile').addClass('d-none').removeClass('d-block');
+        }
+        if(bastpOne != null) {
+            $('.bastpOneInput').addClass('d-none').removeClass('d-block');
+            $('.bastpOneFile').addClass('d-block').removeClass('d-none');
+            $('.bastpOneFile small').html(bastpOne);
+            $('.bastpOneFile a.view').attr('onclick', 'FilePreview(\''+bastpOne+'\', \''+fileType(bastpOne)+'\', \'bastpone\')');
+            $('.bastpOneFile a.download').attr('onclick', 'FileDownload(\''+bastpOne+'\', \''+fileType(bastpOne)+'\', \'bastpone\', \''+title+'\')');
+            $('.bastpOneFile a.delete').attr('onclick', 'deleteFile('+TerminID+',\'bastpone\', \''+bastpOne+'\')');
+        } else {
+            $('.bastpOneInput').addClass('d-block').removeClass('d-none');
+            $('.bastpOneFile').addClass('d-none').removeClass('d-block');
+        }
+        if(bastpTwo != null) {
+            $('.bastpTwoInput').addClass('d-none').removeClass('d-block');
+            $('.bastpTwoFile').addClass('d-block').removeClass('d-none');
+            $('.bastpTwoFile small').html(bastpTwo);
+            $('.bastpTwoFile a.view').attr('onclick', 'FilePreview(\''+bastpTwo+'\', \''+fileType(bastpTwo)+'\', \'bastptwo\')');
+            $('.bastpTwoFile a.download').attr('onclick', 'FileDownload(\''+bastpTwo+'\', \''+fileType(bastpTwo)+'\', \'bastptwo\', \''+title+'\')');
+            $('.bastpTwoFile a.delete').attr('onclick', 'deleteFile('+TerminID+',\'bastptwo\', \''+bastpTwo+'\')');
+        } else {
+            $('.bastpTwoInput').addClass('d-block').removeClass('d-none');
+            $('.bastpTwoFile').addClass('d-none').removeClass('d-block');
+        }
+        if(jobReport != null) {
+            $('.jobReportInput').addClass('d-none').removeClass('d-block');
+            $('.jobReportFile').addClass('d-block').removeClass('d-none');
+            $('.jobReportFile small').html(jobReport);
+            $('.jobReportFile a.view').attr('onclick', 'FilePreview(\''+jobReport+'\', \''+fileType(jobReport)+'\', \'jobreport\')');
+            $('.jobReportFile a.download').attr('onclick', 'FileDownload(\''+jobReport+'\', \''+fileType(jobReport)+'\', \'jobreport\', \''+title+'\')');
+            $('.jobReportFile a.delete').attr('onclick', 'deleteFile('+TerminID+',\'jobreport\', \''+jobReport+'\')');
+        } else {
+            $('.bastpTwoInput').addClass('d-block').removeClass('d-none');
+            $('.bastpTwoFile').addClass('d-none').removeClass('d-block');
+        }
+    });
+    $('.document-modal').modal('show');
+});
+
+function fileType(filename) {
+    if (filename.endsWith(".pdf")) {
+        return "application/pdf";
+    } else if (filename.endsWith(".doc")) {
+        return "application/msword";
+    } else if (filename.endsWith(".docx")) {
+        return "application/msword";
+    } else if (filename.endsWith(".xls")) {
+        return "application/vnd.ms-excel";
+    } else if (filename.endsWith(".xlsx")) {
+        return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    }
+}
+
+function subtitle(name) {
+    if(name == 'punchlist') {
+        return 'DOKUMEN PUNCHLIST';
+    } else if(name == 'bastp_one') {
+        return 'BASTP 1';
+    } else if(name == 'bastp_two') {
+        return 'BASTP 2';
+    } else if(name == 'job_progress_report') {
+        return 'LAPORAN KEMAJUAN PEKERJAAN';
+    }
+}
+function viewFile(termin, column) {
+    console.log('view : '+termin+', column : '+column);
+}
+
+const { degrees, PDFDocument, rgb, Grayscale, StandardFonts } = PDFLib
+const base_url = window.location.origin;
+const pngUrl = base_url + '/img/rahasia.png';
+const pathArray = window.location.pathname.split('/');
+const pathControl = pathArray[1];
+const loading = '<div class="col-lg-12 mt-5"><div class="spinner-border text-success load-file" style="width: 5rem; height: 5rem; margin:auto;" role="status"><span class="sr-only">Loading...</span></div></div>' +
+    '<div class="col-lg-12 text-center mt-3"><span class="text-muted">Harap menunggu, berkas sedang di proses....</span></div>';
+
+
+async function FileDownload(FileName, TypeFile, ColumnName, TerminTitle) {
+    const downloded = new Date();
+    const date = moment(downloded.toString()).format("DD-MM-YYYY");
+    const time = moment(downloded.toString()).format("hhmm");
+    if (TypeFile == "application/pdf") {
+        const existingPdfBytes = await fetch(base_url + '/' + pathControl + '/ViewFile?filename=' + FileName).then(res => res.arrayBuffer());
+        const pngImageBytes = await fetch(pngUrl).then((res) => res.arrayBuffer());
+        const pdfDoc = await PDFDocument.load(existingPdfBytes);
+        console.log(existingPdfBytes);
+        const pngImage = await pdfDoc.embedPng(pngImageBytes);
+        const pngDims = pngImage.scale(0.75);
+
+        const pages = pdfDoc.getPages()
+        pages.map((x) => {
+            x.drawImage(pngImage, {
+                x: x.getWidth() / 2 - 200,
+                y: x.getHeight() / 2 - 100,
+                width: pngDims.width,
+                height: pngDims.height
+            });
+        });
+        const pdfBytes = await pdfDoc.save();
+        download(pdfBytes, `${TerminTitle}_${subtitle(ColumnName)}.pdf`, "application/pdf");
+    } else {
+        const downloadFile = `${TerminTitle}_${subtitle(ColumnName)}`;
+        const blobFile = await fetch(base_url + '/' + pathControl + '/ViewFile?filename=' + FileName).then(res => res.blob());
+        let reader = new FileReader();
+        reader.readAsDataURL(blobFile);
+        reader.onload = function() {
+            const a = document.createElement("a");
+            a.style.display = "none";
+            document.body.appendChild(a);
+            a.href = reader.result;
+
+            if (TypeFile == "application/msword") {
+                a.setAttribute("download", downloadFile + ".doc");
+            } else if (TypeFile == "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+                a.setAttribute("download", downloadFile + ".docx");
+            } else if (TypeFile == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+                a.setAttribute("download", downloadFile + ".xlsx");
+            } else if (TypeFile == "application/vnd.ms-excel") {
+                a.setAttribute("download", downloadFile + ".xls");
+            } else {
+                toastr.error("Proses pengunduhan gagal disebabkan tipe file tidak disupport !")
+            }
+            a.click();
+            window.URL.revokeObjectURL(a.href);
+            document.body.removeChild(a);
+        }
+    }
+}
+
+
+async function FilePreview(FileName, TypeFile, ColumnName) {
+    const fileUrl = base_url + '/' + pathControl + '/ViewFile?filename=' + FileName;
+    if (TypeFile == "application/pdf") {
+        $("#modal-preview").modal("show");
+        $("#filename").html(subtitle(ColumnName));
+        $("#preview-files").html(loading);
+        const existingPdfBytes = await fetch(fileUrl).then(res => res.arrayBuffer());
+        const pngImageBytes = await fetch(pngUrl).then((res) => res.arrayBuffer());
+        const pdfDoc = await PDFDocument.load(existingPdfBytes);
+        const pngImage = await pdfDoc.embedPng(pngImageBytes);
+        const pngDims = pngImage.scale(0.75);
+
+        const courierFont = await pdfDoc.embedFont(StandardFonts.Courier);
+        const downloded = new Date();
+        const date = moment(downloded.toString()).format("DD-MM-YYYY");
+        const time = moment(downloded.toString()).format("hh:mm");
+        const fontSize = 8;
+
+        const pages = pdfDoc.getPages();
+        pages.map((x) => {
+            const { width, height } = x.getSize();
+            x.drawImage(pngImage, {
+                x: x.getWidth() / 2 - 200,
+                y: x.getHeight() / 2 - 100,
+                width: pngDims.width,
+                height: pngDims.height
+            });
+            // x.drawText(`Didownload oleh - ${user} tanggal ${date} jam ${time}`, {
+            //     x: 35,
+            //     y: height - 765,
+            //     font: courierFont,
+            //     size: fontSize,
+            //     color: rgb(1, 0, 0)
+            // });
+        });
+        const pdfBytes = await pdfDoc.saveAsBase64();
+        var element = "<div class='embed-responsive embed-responsive-16by9'>" +
+            "<iframe id='iframe-pdf' src='data:application/pdf;base64," + pdfBytes + "' class='embed-responsive-item' frameborder='0' height='300' allowfullscreen='true'></iframe>" +
+            "</div>";
+        $("#preview-files").html(element);
+    } else {
+        toastr.warning("Tipe berkas tidak disupport untuk ditinjau, silahkan unduh berkas...!");
+    }
+}
+
+// async function downloadFile(FileName, FileType, user, TypeFile) {
+// function downloadFile(termin, column, file) {
+    
+// }
+
+function deleteFile(termin, column, file) {
+    let data = {
+        terminId : termin, 
+        columnName : column, 
+        fileName : file
+    }
+    $.ajax({
+        type: "POST",
+        url: "/Workspace/DeleteFile",
+        data: data,
+        dataType: "json",
+        success: function(response) {
+            // console.log(response)
+            if (response.success) {
+                // $(".document-modal").modal("hide");
+                toastr.success(response.message);
+                $('.punchListInput').removeClass('d-none').addClass('d-block');
+                $('.punchListFile').removeClass('d-block').addClass('d-none');
+
+                $('.bastpOneInput').removeClass('d-none').addClass('d-block');
+                $('.bastpOneFile').removeClass('d-block').addClass('d-none');
+
+                $('.bastpTwoInput').removeClass('d-none').addClass('d-block');
+                $('.bastpTwoFile').removeClass('d-block').addClass('d-none');
+                
+                $('.jobReportInput').removeClass('d-none').addClass('d-block');
+                $('.jobReportFile').removeClass('d-block').addClass('d-none');
+
+                $(".document-modal").modal("hide");
+                // $(".btn-submit-document").html("Unggah").attr("disabled", false);
+            } else {
+                toastr.error(response.message);
+                // $(".error-message-bastpone").html(response.message);
+            }
+        },
+        error: function(err) {
+            $(".btn-submit-document").html("Unggah").attr("disabled", false);
+            toastr.error("Gagal mengunggah berkas...<br/>Silahkan periksa koneksi internet anda.. !");
+            // $(".error-message-bastpone").addClass("text-danger").html("Gagal menggunggah berkas.. !");
+        }
+    })
+}
+
+$(".document-modal").on("hidden.bs.modal", function(e) {
+    $("#InputPunchList").val("");
+    $("#InputBastpOne").val("");
+    $("#InputJobReport").val("");
+    $("#InputBastpTwo").val("");
+
+    uploaded.FileToUploadPunchList=null;
+    uploaded.FileToUploadBastpOne=null;
+    uploaded.FileToUploadBastpTwo=null;
+    uploaded.FileToUploadLaporan=null;
+
+    $(".custom-file-label").html("Choose file");
+    
+    $(".error-message-punchlist").removeClass("text-danger").html("<b>Catatan : </b> Berkas hanya bertipe (.pdf, .doc, .docx, .xls, .xlsx)");
+    $(".error-message-bastpone").removeClass("text-danger").html("<b>Catatan : </b> Berkas hanya bertipe (.pdf, .doc, .docx, .xls, .xlsx)");
+    $(".error-message-bastptwo").removeClass("text-danger").html("<b>Catatan : </b> Berkas hanya bertipe (.pdf, .doc, .docx, .xls, .xlsx)");
+    $(".error-message-report").removeClass("text-danger").html("<b>Catatan : </b> Berkas hanya bertipe (.pdf, .doc, .docx, .xls, .xlsx)");
+});
+
+let uploaded = {
+    ProjectId: id,
+    TerminId: 0,
+    FileToUploadPunchList: null,
+    FileToUploadBastpOne: null,
+    FileToUploadBastpTwo: null,
+    FileToUploadLaporan: null,
+};
+
+$("#InputPunchList").on("change", function(e) {
+    // console.log(uploaded)
+    let files = e.target.files[0];
+    // console.log(files);
+    if (files) {
+        $(".error-message-punchlist").removeClass("text-danger").html("<b>Catatan : </b> Berkas hanya bertipe (.pdf, .doc, .docx, .xls, .xlsx)");
+        if (
+            files.type == "application/pdf" ||
+            files.type == "application/msword" ||
+            files.type == "application/vnd.ms-excel" ||
+            files.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+            files.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        ) {
+            $(".btn-submit-document").attr("disabled", false);
+            uploaded.TerminId = TerminID;
+            uploaded.FileToUploadPunchList = files;
+        } else {
+            $(".error-message-punchlist").addClass("text-danger").html("Harap perhatikan tipe berkas yang anda upload..!");
+        }
+    } else {
+        $(".btn-submit-document").attr("disabled", true);
+    }
+});
+
+ //BastpOne
+$("#InputBastpOne").on("change", function(e) {
+    let files = e.target.files[0];
+    // console.log(files);
+    if (files) {
+        $(".error-message-bastpone").removeClass("text-danger").html("<b>Catatan : </b> Berkas hanya bertipe (.pdf, .jpg, .png, .doc, .docx, .xls, .xlsx, .ppt, .pptx)");
+        if (
+            files.type == "application/pdf" ||
+            files.type == "application/msword" ||
+            files.type == "application/vnd.ms-excel" ||
+            files.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+            files.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        ) {
+            $(".btn-submit-document").attr("disabled", false);
+            uploaded.TerminId = TerminID;
+            uploaded.FileToUploadBastpOne = files;
+        } else {
+            $(".error-message-bastpone").addClass("text-danger").html("Harap perhatikan tipe berkas yang anda upload..!");
+        }
+    } else {
+        $(".btn-submit-document").attr("disabled", true);
+    }
+});
+// BastpOne
+
+
+// BastpTwo
+$("#InputBastpTwo").on("change", function(e) {
+    let files = e.target.files[0];
+    // console.log(files);
+    if (files) {
+        $(".error-message-bastptwo").removeClass("text-danger").html("<b>Catatan : </b> Berkas hanya bertipe (.pdf, .jpg, .png, .doc, .docx, .xls, .xlsx, .ppt, .pptx)");
+        if (
+            files.type == "application/pdf" ||
+            files.type == "application/msword" ||
+            files.type == "application/vnd.ms-excel" ||
+            files.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+            files.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        ) {
+            $(".btn-submit-document").attr("disabled", false);
+            uploaded.TerminId = TerminID;
+            uploaded.FileToUploadBastpTwo = files;
+        } else {
+            $(".error-message-bastptwo").addClass("text-danger").html("Harap perhatikan tipe berkas yang anda upload..!");
+        }
+    } else {
+        $(".btn-submit-document").attr("disabled", true);
+    }
+});
+// BastpTwo
+
+// Laporan
+$("#InputJobReport").on("change", function(e) {
+    let files = e.target.files[0];
+    // console.log(files);
+    if (files) {
+        $(".error-message-report").removeClass("text-danger").html("<b>Catatan : </b> Berkas hanya bertipe (.pdf, .jpg, .png, .doc, .docx, .xls, .xlsx, .ppt, .pptx)");
+        if (
+            files.type == "application/pdf" ||
+            files.type == "application/msword" ||
+            files.type == "application/vnd.ms-excel" ||
+            files.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+            files.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        ) {
+            $(".btn-submit-document").attr("disabled", false);
+            uploaded.TerminId = TerminID;
+            uploaded.FileToUploadLaporan = files;
+        } else {
+            $(".error-message-report").addClass("text-danger").html("Harap perhatikan tipe berkas yang anda upload..!");
+        }
+    } else {
+        $(".btn-submit-document").attr("disabled", true);
+    }
+});
+// Laporan
+
+$("#formUpload").submit(function(e) {
+    e.preventDefault();
+    var formData = new FormData();
+    formData.append("ProjectId", uploaded.ProjectId);
+    formData.append("TerminId", uploaded.TerminId);
+    formData.append("FileToUploadPunchList", uploaded.FileToUploadPunchList);
+    formData.append("FileToUploadBastpOne", uploaded.FileToUploadBastpOne);
+    formData.append("FileToUploadBastpTwo", uploaded.FileToUploadBastpTwo);
+    formData.append("FileToUploadLaporan", uploaded.FileToUploadLaporan);
+    $.ajax({
+        type: "POST",
+        url: "/Workspace/UploadFile",
+        data: formData,
+        dataType: "json",
+        contentType: false,
+        processData: false,
+        success: function(response) {
+            // console.log(response)
+            if (response.success) {
+                uploaded.FileToUploadPunchList=null;
+                uploaded.FileToUploadBastpOne=null;
+                uploaded.FileToUploadBastpTwo=null;
+                uploaded.FileToUploadLaporan=null;
+                $(".document-modal").modal("hide");
+                toastr.success(response.message);
+                $(".btn-submit-document").html("Submit").attr("disabled", false);
+                tableTagihan.ajax.reload();
+                
+            // setTimeout(function() {
+                //     window.location.reload();
+                // }, 3000);
+            } else {
+                toastr.error(response.message);
+                // $(".error-message-bastpone").html(response.message);
+            }
+        },
+        error: function(err) {
+            $(".btn-submit-document").html("Unggah").attr("disabled", false);
+            toastr.error("Gagal mengunggah berkas...<br/>Silahkan periksa koneksi internet anda.. !");
+            // $(".error-message-bastpone").addClass("text-danger").html("Gagal menggunggah berkas.. !");
+        }
+    })
+});
+
+$(".btn-submit-document").on("click", function() {
+    $(this).html("");
+    $(this).attr("disabled", true);
+    $(this).append("<div class='spinner-border spinner-border-sm' role='status'></div> Loading...");
+    $("#formUpload").trigger("submit");
 });
 
 function deleted(url){
