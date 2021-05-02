@@ -1,0 +1,132 @@
+<div class="modal fade default-example-modal-right-sm" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-right">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title h4">Informasi Project</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card mb-g">
+                    <div class="card-body p-3">
+                        
+                        <div class="row fs-b fw-300">
+                            <div class="col text-center">
+                                <img src="~/img/project_type.png" class="img-fluid" alt="">
+                            </div>
+                        </div>
+                        <div class="row fs-b mt-2">
+                            <div class="col text-center">
+                                <p class="mb-0"><span class="fw-300">Jenis Project</span></p>
+                                <p><span class="fw-900">@(ViewBag.Project.type == "unit_price" ? "UNIT PRICE" : "JASA/ ALL IN")</span></p>
+                            </div>
+                        </div>
+                        <div class="text-left fw-400 mt-3">
+                            <span class="fw-500 text-uppercase">Diikuti Oleh</span>
+                            <div class="fs-sm d-flex align-items-center">
+                                <a href="#" class="btn-m-s">
+                                <img src="~/img/demo/avatars/avatar-a.png" class="profile-image-sm rounded-circle" alt="aa">
+                                </a>
+                                <a href="#" class="btn-m-s">
+                                <img src="~/img/demo/avatars/avatar-b.png" class="profile-image-sm rounded-circle" alt="aa">
+                                </a>
+                                <a href="#" class="btn-m-s">
+                                <img src="~/img/demo/avatars/avatar-c.png" class="profile-image-sm rounded-circle" alt="aa">
+                                </a>
+                                <a href="#" class="btn-m-s">
+                                <img src="~/img/demo/avatars/avatar-e.png" class="profile-image-sm rounded-circle" alt="aa">
+                                </a>
+                                <a href="#" class="btn-m-s">
+                                <img src="~/img/demo/avatars/avatar-h.png" class="profile-image-sm rounded-circle" alt="aa">
+                                </a>
+                                <a href="#" class="btn-m-s">
+                                <img src="~/img/demo/avatars/avatar-k.png" class="profile-image-sm rounded-circle" alt="aa">
+                                </a>
+                                <a href="#" class="btn-m-s fs-xs">
+                                <span data-hasmore="+7" class="rounded-circle profile-image-sm">
+                                <img src="~/img/demo/avatars/avatar-j.png" class="profile-image-sm rounded-circle" alt="aa">
+                                </span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-g">
+                    <div class="card-body p-3">
+                        <h5 class="text-uppercase">Informasi Project
+                            @* <span class="badge badge-danger fw-n position-absolute pos-top pos-right mt-3 mr-3">Delayed</span> *@
+                        </h5>
+                        <div class="row fs-b fw-300">
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td>Direksi Pelaksana</td>
+                                        <td>@ViewBag.Users.MaintenanceAreas.name</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Asset Holder</td>
+                                        <td>RFCC, UTL RFCC</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nomor Notif</td>
+                                        <td>@ViewBag.Project.notification_number</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nomor PR</td>
+                                        <td>@ViewBag.Project.purchase_request_number</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nomor PO</td>
+                                        <td>@ViewBag.Project.purchase_order_number</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nilai PO</td>
+                                        <td>@ViewBag.Project.purchase_order_cost</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nama Vendor</td>
+                                        <td>@ViewBag.Project.vendor_name</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nomor SP3MK</td>
+                                        <td>@ViewBag.Project.spppmk_number</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        @* <div class="row fs-b fw-300">
+                            <div class="col-lg-7 text-left">Direksi Pelaksana</div>
+                            <div class="col-lg-5 text-right">MA 7</div>
+                        </div>
+                        
+                        <div class="row fs-b fw-300">
+                            <div class="col-lg-6 text-left">Asset Holder</div>
+                            <div class="col-lg-6 text-right">RFCC, UTL RFCC</div>
+                        </div><div class="row fs-b fw-300">
+                            <div class="col-lg-6 text-left">Nomor Notif</div>
+                            <div class="col-lg-6 text-right">@ViewBag.Project.notification_number</div>
+                        </div><div class="row fs-b fw-300">
+                            <div class="col-lg-6 text-left">Nomor PR</div>
+                            <div class="col-lg-6 text-right">@ViewBag.Project.purchase_request_number</div>
+                        </div>
+                        
+                        <div class="row fs-b fw-300">
+                            <div class="col-lg-6 text-left">Nomor PO</div>
+                            <div class="col-lg-6 text-right">@ViewBag.Project.purchase_order_number</div>
+                        </div><div class="row fs-b fw-300">
+                            <div class="col-lg-6 text-left">Nilai PO</div>
+                            <div class="col-lg-6 text-right">@ViewBag.Project.purchase_order_cost</div>
+                        </div><div class="row fs-b fw-300">
+                            <div class="col-lg-6 text-left">Nama Vendor</div>
+                            <div class="col-lg-6 text-right">@ViewBag.Project.vendor_name</div>
+                        </div><div class="row fs-b fw-300">
+                            <div class="col-lg-6 text-left">Nomor SP3MK</div>
+                            <div class="col-lg-6 text-right">@ViewBag.Project.spppmk_number</div>
+                        </div> *@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

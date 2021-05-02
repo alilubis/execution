@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.StaticFiles;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace SmartAdmin.WebUI.Controllers
 {
@@ -134,7 +134,9 @@ namespace SmartAdmin.WebUI.Controllers
         [Authorize]
         public IActionResult Detail(int Id) {
             var Project = _db.Project.FirstOrDefault(p => p.id == Id);
-            var User = _db.Users.FirstOrDefault(u => u.id == Project.user_id);
+            var User = _db.Users.Include(u => u.MaintenanceAreas)
+            .FirstOrDefault(u => u.id == Project.user_id);
+            ViewBag.Users = User;
             ViewBag.Project = Project;
             ViewBag.Inisiasi = _db.SubInitiations.FirstOrDefault(i => i.id == Project.sub_inisiasi_id);
             ViewBag.Discipline = _db.Disciplines.FirstOrDefault(i => i.id == User.discipline_id);
@@ -144,10 +146,8 @@ namespace SmartAdmin.WebUI.Controllers
                             .Where(t => t.ParentId != 0)
                             .Where(t => t.Project_id == Id)
                             .Select(t => new {t.planned_start});
-                            // .Select(t => new {t.StartDate});
             if(StartDate.ToList().Count > 0) {
                 ViewBag.Tasks = StartDate.Min(t => t.planned_start);
-                // ViewBag.Tasks = StartDate.Min(t => t.StartDate);
             } else {
                 ViewBag.Tasks = null;
             }
@@ -157,10 +157,6 @@ namespace SmartAdmin.WebUI.Controllers
         [Authorize]
         [HttpPost]
         [ActionName("UploadFile")]
-        // public async Task<IActionResult> UploadFile(
-        //     IFormFile FileToUploadPunchList, IFormFile FileToUploadBastpOne, 
-        //     IFormFile FileToUploadBastpTwo, IFormFile FileToUploadLaporan, int ProjectId, int TerminId
-        //     ){
         public async Task<IActionResult> UploadFile(FileInputModel model){    
                 var FileSupport = new[] { "xls", "xlsx", "pdf", "doc", "docx" };
                 var message = "";
@@ -172,10 +168,6 @@ namespace SmartAdmin.WebUI.Controllers
                     {
                         success = false;
                         message = "Terjadi kesalahan saat mengunggah berkas, silahkan coba lagi..!";
-                        // return Json(new {
-                        //     success = false,
-                        //     message = "Terjadi kesalahan saat mengunggah berkas, silahkan coba lagi..!"
-                        // });
                     } else {
                         if(SaveFile(model)) {
                             string path = Path.Combine(this.Environment.WebRootPath, "data");
@@ -188,20 +180,11 @@ namespace SmartAdmin.WebUI.Controllers
                             {
                                 model.FileToUploadPunchList.CopyTo(streamPL);
                             }
-                            // SaveFile(model);
                             success = true;
                             message = "Berhasil mengunggah berkas..!";
-                            // return Json(new {
-                            //     success = true,
-                            //     message = "Berhasil mengunggah berkas..!"
-                            // });
                         } else {
                             success = false;
                             message = "Terjadi kesalahan saat mengunggah berkas, silahkan coba lagi..!";
-                            // return Json(new {
-                            //     success = false,
-                            //     message = "Terjadi kesalahan saat mengunggah berkas, silahkan coba lagi..!"
-                            // });
                         }
                     }
                     
@@ -209,10 +192,6 @@ namespace SmartAdmin.WebUI.Controllers
                 if (model.FileToUploadBastpOne != null) {
                     var fileExtBOne = System.IO.Path.GetExtension(model.FileToUploadBastpOne.FileName).Substring(1);
                     if(!FileSupport.Contains(fileExtBOne)) {
-                    //     return Json(new {
-                    //        success = false,
-                    //        message = "Terjadi kesalahan saat mengunggah berkas, silahkan coba lagi..!"
-                    //    });
                         success = false;
                         message = "Terjadi kesalahan saat mengunggah berkas, silahkan coba lagi..!";
                     } else {
@@ -227,17 +206,9 @@ namespace SmartAdmin.WebUI.Controllers
                             {
                                 model.FileToUploadBastpOne.CopyTo(streamOne);
                             }
-                            // return Json(new {
-                            //     success = true,
-                            //     message = "Berhasil mengunggah berkas..!"
-                            // });
                             success = true;
                             message = "Berhasil mengunggah berkas..!";
                         } else {
-                            // return Json(new {
-                            //     success = false,
-                            //     message = "Terjadi kesalahan saat mengunggah berkas, silahkan coba lagi..!"
-                            // });
                             success = false;
                             message = "Terjadi kesalahan saat mengunggah berkas, silahkan coba lagi..!";
                         }
@@ -247,10 +218,6 @@ namespace SmartAdmin.WebUI.Controllers
                 if (model.FileToUploadBastpTwo != null) {
                     var fileExtBTwo = System.IO.Path.GetExtension(model.FileToUploadBastpTwo.FileName).Substring(1);
                     if(!FileSupport.Contains(fileExtBTwo)) {
-                    //     return Json(new {
-                    //        success = false,
-                    //        message = "Terjadi kesalahan saat mengunggah berkas, silahkan coba lagi..!"
-                    //    });
                         success = false;
                         message = "Terjadi kesalahan saat mengunggah berkas, silahkan coba lagi..!";
                     } else {
@@ -265,17 +232,9 @@ namespace SmartAdmin.WebUI.Controllers
                             {
                                 model.FileToUploadBastpTwo.CopyTo(stream);
                             }
-                            // return Json(new {
-                            //     success = true,
-                            //     message = "Berhasil mengunggah berkas..!"
-                            // });
                             success = true;
                             message = "Berhasil mengunggah berkas..!";
                         } else {
-                            // return Json(new {
-                            //     success = false,
-                            //     message = "Terjadi kesalahan saat mengunggah berkas, silahkan coba lagi..!"
-                            // });
                             success = false;
                             message = "Terjadi kesalahan saat mengunggah berkas, silahkan coba lagi..!";
                         }
@@ -285,10 +244,6 @@ namespace SmartAdmin.WebUI.Controllers
                 if (model.FileToUploadLaporan != null) {
                     var fileExtReport = System.IO.Path.GetExtension(model.FileToUploadLaporan.FileName).Substring(1);
                     if(!FileSupport.Contains(fileExtReport)) {
-                    //     return Json(new {
-                    //        success = false,
-                    //        message = "Terjadi kesalahan saat mengunggah berkas, silahkan coba lagi..!"
-                    //    });
                         success = false;
                         message = "Terjadi kesalahan saat mengunggah berkas, silahkan coba lagi..!";
                     } else {
@@ -304,39 +259,24 @@ namespace SmartAdmin.WebUI.Controllers
                             {
                                 model.FileToUploadLaporan.CopyTo(stream);
                             }
-                            // return Json(new {
-                            //     success = true,
-                            //     message = "Berhasil mengunggah berkas..!"
-                            // });
                             success = true;
                             message = "Berhasil mengunggah berkas..!";
                         } else {
-                            // return Json(new {
-                            //     success = false,
-                            //     message = "Terjadi kesalahan saat mengunggah berkas, silahkan coba lagi..!"
-                            // });
                             success = false;
                             message = "Terjadi kesalahan saat mengunggah berkas, silahkan coba lagi..!";
                         }
                     }
                 }
 
-                // else {
-                    return Json(new {
-                           success = success,
-                           message = message
-                       });
-                // }
+                return Json(new {
+                    success = success,
+                    message = message
+                });
         }
-        // protected void Page_Load(object sender, EventArgs e) {    
-        //     var webRoot = Environment.WebRootPath;
-        //     var file = System.IO.Path.Combine(webRoot, "test.txt");
-        //     System.IO.File.WriteAllText(file, "Hello World!");
-        // } 
+        
         [Authorize]
         [HttpPost]
         [ActionName("DeleteFile")]
-
         public JsonResult DeleteFile(int terminId, string columnName, string fileName) {
             var termin = _db.TerminDocument.FirstOrDefault(t => t.termin_id == terminId);
             if(termin != null) {
@@ -351,8 +291,6 @@ namespace SmartAdmin.WebUI.Controllers
                 }
                 _db.SaveChanges();
 
-                // string path = Server.MapPath("data/" + fileName);  
-                
                 var webRoot = Environment.WebRootPath;
                 string path = System.IO.Path.Combine(webRoot, "data/" + fileName);
 
@@ -380,17 +318,12 @@ namespace SmartAdmin.WebUI.Controllers
         public async Task<IActionResult> ViewFile(string filename) 
         {
             var filePath = Path.Combine(this.Environment.WebRootPath, "data/"+filename);
-            // byte[] bytes = File.ReadAllBytes(filePath + filename);
-
             var memory = new MemoryStream();
             using (var stream = new FileStream(filePath, FileMode.Open))
             {
                 await stream.CopyToAsync(memory);
             }
             memory.Position = 0;
-            // return File(memory, "application/pdf");
-           
-            // Response.Headers.Add("Content-Disposition", "inline; filename=" + filename);
             if (filename.EndsWith(".pdf")) {
                 return File(memory, "application/pdf");
             } else if (filename.EndsWith(".doc")) {

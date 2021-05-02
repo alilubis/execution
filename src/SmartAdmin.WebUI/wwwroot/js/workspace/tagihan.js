@@ -717,13 +717,8 @@ $("#formUpload").submit(function(e) {
                 toastr.success(response.message);
                 $(".btn-submit-document").html("Submit").attr("disabled", false);
                 tableTagihan.ajax.reload();
-                
-            // setTimeout(function() {
-                //     window.location.reload();
-                // }, 3000);
             } else {
                 toastr.error(response.message);
-                // $(".error-message-bastpone").html(response.message);
             }
         },
         error: function(err) {

@@ -15,11 +15,11 @@ namespace SmartAdmin.WebUI.Models
         public int sub_inisiasi_id { get; set; }
         // public string work_order_number { get; set; }
         // public string reference_number { get; set; }
-        // public string notification_number { get; set; }
+        public string notification_number { get; set; }
         public long purchase_order_cost { get; set; }
         public string purchase_order_number { get; set; }
-        // public string purchase_request_number { get; set; }
-        // public string spppmk_number { get; set; }
+        public string purchase_request_number { get; set; }
+        public string spppmk_number { get; set; }
         public int termin { get; set; }
         public string vendor_name { get; set; }
         // public string buyer_name { get; set; }

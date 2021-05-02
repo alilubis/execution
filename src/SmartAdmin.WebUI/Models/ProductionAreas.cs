@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SmartAdmin.WebUI.Models
 {
-    public class MaintenanceAreas
+    // [Table("production_areas")]
+    public class ProductionAreas
     {
-        [Key]
         public int id { get; set; }
         public string name { get; set; }
-        public ICollection<Users> USR {get; set;}
-        // public List<Users> USR {get; set;}
+        // public int? id_last { get; set; }
+        // public Users Users {get; set;}
+
     }
 }
